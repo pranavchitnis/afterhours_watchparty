@@ -3,554 +3,727 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AFTERHOURS // Watch Together</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFTERHOURS — Watch Together</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
 :root {
-  --bg: #090b10;
-  --panel: #11151d;
-  --line: #28313c;
-  --text: #edf4f4;
-  --muted: #8b98a5;
-  --cyan: #86ffe0;
-  --pink: #ff6da8;
+  --bg:#08090c;
+  --panel:#101218;
+  --panel2:#151820;
+  --line:#272b36;
+  --cyan:#72f6ff;
+  --pink:#ff64c8;
+  --text:#f3f4f8;
+  --muted:#858b9b;
+  --green:#89ffba;
+  --red:#ff7272;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: "Space Grotesk", sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Space Grotesk',sans-serif;
+  min-height:100vh;
 }
 
-button, input { font: inherit; }
+button,input { font:inherit; }
+button { cursor:pointer; }
+button:disabled { opacity:.35; cursor:not-allowed; }
 
-button {
-  cursor: pointer;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 10px 14px;
-  background: transparent;
-  color: var(--text);
+button:focus-visible,input:focus-visible {
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
 }
-
-button:hover { border-color: var(--cyan); }
-button:disabled { opacity: .5; cursor: wait; }
-
-input {
-  width: 100%;
-  min-width: 0;
-  padding: 11px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #080a0e;
-  color: var(--text);
-}
-
-button:focus-visible, input:focus-visible {
-  outline: 2px solid var(--cyan);
-  outline-offset: 3px;
-}
-
-.primary {
-  background: var(--cyan);
-  border-color: var(--cyan);
-  color: #06100e;
-  font-weight: 700;
-}
-
-.danger:hover { border-color: var(--pink); color: var(--pink); }
-.active { border-color: var(--cyan); color: var(--cyan); }
 
 header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding: 20px 5%;
-  border-bottom: 1px solid var(--line);
+  height:76px;
+  border-bottom:1px solid var(--line);
+  padding:0 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
 }
 
 .logo {
-  font-size: 23px;
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-size:25px;
+  font-weight:700;
+  letter-spacing:-1.5px;
+}
+.logo span { color:var(--cyan); }
+
+.header-right {
+  display:flex;
+  gap:16px;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
 
-.logo span { color: var(--cyan); }
-
-.logo small {
-  display: block;
-  font: 9px "DM Mono", monospace;
-  color: var(--muted);
-  letter-spacing: 2px;
+.mono {
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  letter-spacing:.3px;
 }
 
-nav, .actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.status {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--green);
 }
 
-.eyebrow {
-  color: var(--cyan);
-  font: 10px "DM Mono", monospace;
-  letter-spacing: 2px;
+.dot {
+  width:7px;
+  height:7px;
+  background:currentColor;
+  border-radius:50%;
+}
+
+#ping {
+  color:var(--cyan);
+  min-width:100px;
 }
 
 main {
-  max-width: 1400px;
-  margin: auto;
-  padding: 35px 5% 60px;
+  max-width:1500px;
+  padding:28px 4%;
+  margin:auto;
 }
 
-h1 {
-  font-size: clamp(36px, 6vw, 66px);
-  line-height: 1;
-  letter-spacing: -3px;
-  margin: 15px 0;
+.room-bar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:23px;
+  flex-wrap:wrap;
 }
 
-h2 { letter-spacing: -1px; }
-
-p {
-  color: var(--muted);
-  line-height: 1.6;
+.eyebrow {
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
 }
 
-.notice {
-  border: 1px solid var(--line);
-  padding: 12px 15px;
-  border-radius: 6px;
-  color: var(--muted);
-  font: 11px "DM Mono", monospace;
-  margin-bottom: 22px;
-  overflow-wrap: anywhere;
+.room-code {
+  color:var(--cyan);
+  font-family:'DM Mono',monospace;
+  font-size:20px;
+  letter-spacing:3px;
+  margin-top:5px;
 }
 
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  flex-wrap: wrap;
-  gap: 25px;
-  margin-bottom: 30px;
+.room-actions,.button-row {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
-.hero p { max-width: 470px; }
-
-.roombar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 24px;
+.btn {
+  border:1px solid var(--line);
+  color:var(--text);
+  background:var(--panel2);
+  border-radius:7px;
+  padding:10px 14px;
+  font-size:12px;
+  transition:.15s;
 }
 
-.roomcode {
-  color: var(--cyan);
-  font: 20px "DM Mono", monospace;
-  letter-spacing: 3px;
-  margin-top: 6px;
+.btn:hover:not(:disabled) {
+  border-color:var(--cyan);
+  color:var(--cyan);
 }
 
-.muted { color: var(--muted); font-size: 12px; }
+.btn.primary {
+  background:var(--cyan);
+  color:#061014;
+  border-color:var(--cyan);
+  font-weight:700;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background:#b2fbff;
+  color:#061014;
+}
+
+.btn.pink {
+  border-color:#683451;
+  color:var(--pink);
+}
+
+.btn.small {
+  padding:7px 10px;
+  font-size:11px;
+}
 
 .layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 18px;
-  align-items: start;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:22px;
+  align-items:start;
 }
 
-.player, .panel {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--panel);
-  overflow: hidden;
+.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.video-heading {
+  padding:15px 17px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.video-heading h2 {
+  font-size:14px;
+  margin:0;
+  font-weight:600;
+}
+
+.role {
+  padding:5px 8px;
+  border:1px solid var(--line);
+  border-radius:5px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.role.host {
+  color:var(--pink);
+  border-color:#683451;
+}
+
+.player-wrap {
+  position:relative;
+  background:#000;
+  aspect-ratio:16/9;
+  overflow:hidden;
+}
+
+#player {
+  width:100%;
+  height:100%;
+  position:absolute;
+  inset:0;
+}
+
+#player iframe {
+  width:100%;
+  height:100%;
+}
+
+#reaction-layer {
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+
+.float-reaction {
+  position:absolute;
+  bottom:7%;
+  left:var(--left);
+  font-size:clamp(26px,3.4vw,40px);
+  line-height:1;
+  animation:float-up 2.3s ease-out forwards;
+  filter:drop-shadow(0 2px 5px #0009);
+}
+
+@keyframes float-up {
+  0% { opacity:0; transform:translateY(10px) scale(.65) rotate(-8deg); }
+  12% { opacity:1; transform:translateY(0) scale(1.08) rotate(4deg); }
+  75% { opacity:1; }
+  100% { opacity:0; transform:translateY(-160px) scale(.88) rotate(-7deg); }
+}
+
+.video-info {
+  padding:15px 17px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  border-bottom:1px solid var(--line);
+}
+
+.video-title {
+  font-size:14px;
+  font-weight:600;
+  overflow-wrap:anywhere;
+}
+
+.video-subtitle {
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+#host-controls {
+  padding:14px 17px;
+  border-bottom:1px solid var(--line);
+}
+
+.control-label {
+  color:var(--pink);
+  font-size:10px;
+  letter-spacing:1.4px;
+  margin-bottom:11px;
+  text-transform:uppercase;
+}
+
+.control-line {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.seek-line {
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  margin-top:13px;
+}
+
+input[type="range"] {
+  width:100%;
+  accent-color:var(--cyan);
+  cursor:pointer;
+}
+
+.guest-note {
+  padding:12px 17px;
+  color:var(--muted);
+  border-bottom:1px solid var(--line);
+  font-size:11px;
+}
+
+.reaction-bar {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 17px;
+  flex-wrap:wrap;
+}
+
+.reaction-bar .eyebrow {
+  margin-right:4px;
+}
+
+.reaction-btn {
+  width:46px;
+  height:43px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--panel2);
+  font-size:23px;
+  transition:transform .15s,border-color .15s;
+}
+
+.reaction-btn:hover {
+  transform:scale(1.12);
+  border-color:var(--pink);
+}
+
+.side {
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  min-width:0;
+}
+
+.side-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 16px;
+  border-bottom:1px solid var(--line);
+}
+
+.side-heading h3 {
+  margin:0;
+  font-size:13px;
+}
+
+.count {
+  color:var(--cyan);
+  font:11px 'DM Mono',monospace;
+}
+
+.chat-messages {
+  height:280px;
+  overflow-y:auto;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.chat-message { overflow-wrap:anywhere; }
+
+.chat-top {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:4px;
+}
+
+.chat-name {
+  font-size:11px;
+  font-weight:600;
+  color:var(--cyan);
+}
+
+.chat-time {
+  font:9px 'DM Mono',monospace;
+  color:var(--muted);
+}
+
+.chat-text {
+  font-size:12px;
+  line-height:1.55;
+  color:#d4d6df;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.chat-input-row {
+  display:flex;
+  gap:7px;
+  padding:11px;
+  border-top:1px solid var(--line);
+}
+
+.field {
+  min-width:0;
+  width:100%;
+  background:#090b10;
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:11px 12px;
+  color:var(--text);
+  font-size:12px;
+}
+
+.field:focus { border-color:var(--cyan); outline:none; }
+
+.chat-input-row .field { flex:1; }
+
+.playlist-form {
+  padding:12px;
+  display:flex;
+  gap:7px;
+}
+
+.playlist-form .field { flex:1; }
+
+.playlist {
+  padding:0 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.track {
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  display:flex;
+  gap:9px;
+  align-items:center;
+}
+
+.track.active { border-color:#347e85; }
+
+.track-info {
+  min-width:0;
+  flex:1;
+}
+
+.track-title {
+  font-size:11px;
+  overflow-wrap:anywhere;
+}
+
+.track-added {
+  margin-top:5px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.vote-btn {
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:transparent;
+  color:var(--cyan);
+  padding:7px;
+  font:11px 'DM Mono',monospace;
 }
 
 .empty {
-  display: grid;
-  place-items: center;
-  text-align: center;
-  aspect-ratio: 16 / 9;
-  min-height: 260px;
-  padding: 24px;
-  border: 1px dashed var(--line);
-  border-radius: 8px;
-  background: var(--panel);
+  padding:24px 10px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
 }
 
-.empty h2 { margin: 10px 0 0; }
-.empty p { max-width: 380px; margin: 8px 0 0; }
-
-.youtube-input {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
+#setup {
+  position:fixed;
+  inset:0;
+  z-index:50;
+  background:#08090cf5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-y:auto;
 }
 
-.youtube-input input { flex: 1; }
-
-.youtube-player {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
-  overflow: hidden;
+.setup-card {
+  width:min(440px,100%);
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--panel);
 }
 
-.youtube-player iframe,
-.youtube-player > div {
-  width: 100%;
-  height: 100%;
-  border: 0;
+.setup-card h1 {
+  font-size:34px;
+  letter-spacing:-2px;
+  margin:0 0 8px;
 }
 
-#youtubePlayer {
-  width: 100%;
-  height: 100%;
+.setup-card h1 span { color:var(--cyan); }
+
+.setup-card p {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:23px;
 }
 
-.player-info {
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+.setup-card label {
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:1px;
+  margin:16px 0 7px;
+  text-transform:uppercase;
 }
 
-.chat {
-  display: flex;
-  flex-direction: column;
-  min-height: 400px;
+.setup-card .btn { width:100%; margin-top:10px; }
+
+#notice {
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  background:#1c232b;
+  border:1px solid #35434c;
+  padding:11px 16px;
+  border-radius:8px;
+  font-size:12px;
+  z-index:100;
+  max-width:90vw;
+  text-align:center;
+  box-shadow:0 8px 30px #0008;
 }
 
-.chat-head {
-  padding: 15px;
-  border-bottom: 1px solid var(--line);
-}
-
-.messages {
-  flex: 1;
-  min-height: 250px;
-  max-height: 370px;
-  overflow-y: auto;
-  padding: 14px;
-}
-
-.message {
-  margin-bottom: 15px;
-  font-size: 12px;
-  overflow-wrap: anywhere;
-}
-
-.message strong {
-  color: var(--cyan);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.chat-form {
-  display: flex;
-  gap: 6px;
-  padding: 10px;
-  border-top: 1px solid var(--line);
-}
-
-.section { margin-top: 38px; }
-
-.section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.panel { padding: 18px; margin-top: 18px; }
-
-.member {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 13px;
-  overflow-wrap: anywhere;
-}
-
-.pollrow, .playlist-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 13px;
-}
-
-.pollrow button { flex: 1; text-align: left; }
-
-.vote-count {
-  color: var(--cyan);
-  font: 10px "DM Mono", monospace;
-  white-space: nowrap;
-}
-
-.hidden { display: none !important; }
-
-.modal-back {
-  position: fixed;
-  inset: 0;
-  z-index: 5;
-  background: #000c;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-}
-
-.modal {
-  width: min(420px, 100%);
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 25px;
-}
-
-.modal input { margin: 7px 0; }
-
-.modal-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.modal-actions button { flex: 1; }
-
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--cyan);
-  color: #06100e;
-  border-radius: 6px;
-  padding: 12px 18px;
-  z-index: 10;
-  font-size: 12px;
-  max-width: 90%;
-}
+.hidden { display:none !important; }
 
 footer {
-  border-top: 1px solid var(--line);
-  padding: 22px 5%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  color: var(--muted);
-  font: 10px "DM Mono", monospace;
+  margin-top:25px;
+  padding:15px 0;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.7;
 }
 
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
+@media(max-width:900px) {
+  .layout { grid-template-columns:1fr; }
+  .side { display:grid; grid-template-columns:1fr; }
+  .chat-messages { height:240px; }
 }
 
-@media (max-width: 500px) {
-  header, main { padding-left: 4%; padding-right: 4%; }
-  nav { width: 100%; }
-  .youtube-input { flex-wrap: wrap; }
+@media(max-width:520px) {
+  header { padding:0 4%; height:68px; }
+  .logo { font-size:21px; }
+  .header-right { gap:9px; }
+  #ping { min-width:0; }
+  main { padding:18px 3%; }
+  .room-code { font-size:17px; }
+  .setup-card { padding:22px; }
+  .reaction-btn { width:43px; height:42px; }
 }
 </style>
 </head>
 
 <body>
+
 <header>
-  <div class="logo">
-    AFTER<span>HOURS</span>
-    <small>THE INTERNET'S LIVING ROOM</small>
+  <div class="logo">AFTER<span>HOURS</span></div>
+  <div class="header-right">
+    <div class="mono status"><span class="dot"></span><span id="connection">CONNECTING</span></div>
+    <div class="mono" id="ping">PING: -- ms</div>
   </div>
-
-  <nav>
-    <button class="navbtn active" data-view="discover">Discover</button>
-    <button class="navbtn" data-view="room">Watch room</button>
-    <button class="navbtn" data-view="playlist">Playlist</button>
-  </nav>
-
-  <span id="status" class="eyebrow">CONNECTING...</span>
 </header>
 
 <main>
-  <div id="connection" class="notice">Connecting to Firebase...</div>
-
-  <section class="hero">
+  <div class="room-bar">
     <div>
-      <div class="eyebrow">Stay Up, Tune In</div>
-      <h1>Your People.<br>Your moment.</h1>
-      <p>Find something worth watching. Invite your people. Make a night of it.</p>
+      <div class="eyebrow">YOUR WATCH ROOM</div>
+      <div class="room-code" id="room-code">------</div>
     </div>
-
-    <div class="actions">
-      <button class="primary" id="createBtn">+ Create a room</button>
-      <button id="joinBtn">Join with code ↗</button>
-    </div>
-  </section>
-
-  <div class="roombar">
-    <div>
-      <div class="muted">CURRENT ROOM</div>
-      <div id="roomCode" class="roomcode">NO ROOM</div>
-    </div>
-
-    <div>
-      <div id="roomRole" class="eyebrow">PRIVATE SESSION</div>
-      <div id="memberCount" class="muted">Not in a room</div>
-    </div>
-
-    <div class="actions">
-      <button id="copyBtn">Copy invite code ↗</button>
-      <button id="leaveBtn" class="danger hidden">Leave room</button>
+    <div class="room-actions">
+      <button class="btn small" id="copy-code">COPY CODE</button>
+      <button class="btn small" id="copy-link">COPY INVITE LINK</button>
+      <button class="btn small pink" id="leave-room">LEAVE ROOM</button>
     </div>
   </div>
 
-  <!-- DISCOVER: no player or chat here -->
-  <section id="discoverView">
-    <div class="empty">
-      <div>
-        <div class="eyebrow">YOUR NEXT HANGOUT</div>
-        <h2 id="discoverTitle">Nothing playing yet.</h2>
-        <p id="discoverDescription">
-          Create a room or join one with a code. Your shared player appears inside the watch room.
-        </p>
-        <div class="actions" style="justify-content:center;margin-top:18px">
-          <button class="primary" id="discoverCreate">Create a room ↗</button>
-          <button id="discoverJoin">Join a room ↗</button>
-          <button id="openRoomBtn" class="hidden">Open watch room ↗</button>
-        </div>
+  <div class="layout">
+    <section class="panel">
+      <div class="video-heading">
+        <h2>NOW PLAYING / <span id="player-status">WAITING</span></h2>
+        <span class="role" id="role-badge">CONNECTING...</span>
       </div>
-    </div>
-  </section>
 
-  <!-- WATCH ROOM: player and chat exist only here -->
-  <section id="roomView" class="hidden">
-    <div class="eyebrow">002 / THE HANGOUT</div>
-    <h2>Your room, your rules.</h2>
-    <p id="roomDescription">Create or join a room to begin.</p>
+      <div class="player-wrap">
+        <div id="player"></div>
+        <div id="reaction-layer"></div>
+      </div>
 
-    <div class="layout">
-      <div id="playerCol">
-        <div class="player">
-          <div class="youtube-input">
-            <input id="youtubeUrl" type="url" placeholder="Paste a YouTube link...">
-            <button id="loadYoutube" class="primary" type="button">Load Video</button>
-          </div>
-
-          <div class="youtube-player" id="playerBox">
-            <div id="youtubePlayer"></div>
-          </div>
-
-          <div class="player-info">
-            <div>
-              <div class="eyebrow">NOW PLAYING</div>
-              <strong id="nowTitle">No video selected</strong>
-            </div>
-            <span id="syncStatus" class="muted">WAITING FOR VIDEO</span>
-          </div>
+      <div class="video-info">
+        <div>
+          <div class="video-title" id="video-title">Waiting for a video...</div>
+          <div class="video-subtitle" id="video-subtitle">Create a room and invite your friends.</div>
         </div>
+        <div class="mono" id="member-count">0 MEMBERS</div>
+      </div>
 
-        <div class="actions" style="margin-top:12px">
-          <button data-emoji="😂">😂</button>
-          <button data-emoji="🔥">🔥</button>
-          <button data-emoji="😭">😭</button>
-          <button data-emoji="👀">👀</button>
-          <button data-emoji="❤️">❤️</button>
-          <span id="reactionFeed" class="muted"></span>
+      <div id="host-controls" class="hidden">
+        <div class="control-label">HOST CONTROLS — ONLY YOU CAN CONTROL PLAYBACK</div>
+        <div class="control-line">
+          <button class="btn primary" id="play-pause">▶ PLAY</button>
+          <button class="btn" id="back-10">−10 SEC</button>
+          <button class="btn" id="forward-10">+10 SEC</button>
+          <button class="btn" id="sync-now">SYNC ROOM</button>
         </div>
-
-        <div class="panel">
-          <div class="eyebrow">PEOPLE HERE</div>
-          <div id="members">No participants</div>
-          <div class="actions" style="margin-top:18px">
-            <button id="transferHost">Transfer host</button>
-          </div>
+        <div class="seek-line">
+          <span class="mono" id="current-time">0:00</span>
+          <input type="range" id="seek" min="0" max="100" value="0" step="0.5">
+          <span class="mono" id="duration">0:00</span>
         </div>
-
-        <div class="panel">
-          <div class="eyebrow">GROUP POLL</div>
-          <h2>What are we watching?</h2>
-          <p>Vote for a video in the shared playlist.</p>
-          <div id="pollOptions"></div>
+        <div class="control-line" style="margin-top:14px">
+          <input id="video-url" class="field" placeholder="Paste YouTube URL or video ID">
+          <button class="btn primary" id="load-video">LOAD VIDEO</button>
         </div>
       </div>
 
-      <aside class="panel chat">
-        <div class="chat-head">
-          <strong>Room chat</strong>
-          <span id="chatStatus" class="muted">LIVE · ROOM</span>
+      <div id="guest-note" class="guest-note">
+        Host controls playback. You can watch, chat and react.
+      </div>
+
+      <div class="reaction-bar">
+        <span class="eyebrow">REACT</span>
+        <button class="reaction-btn" data-emoji="❤️" title="Heart">❤️</button>
+        <button class="reaction-btn" data-emoji="😂" title="Laugh">😂</button>
+        <button class="reaction-btn" data-emoji="🔥" title="Fire">🔥</button>
+        <button class="reaction-btn" data-emoji="😭" title="Crying">😭</button>
+        <button class="reaction-btn" data-emoji="💀" title="Dead">💀</button>
+        <button class="reaction-btn" data-emoji="👏" title="Clap">👏</button>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="panel">
+        <div class="side-heading">
+          <h3>ROOM CHAT</h3>
+          <span class="count" id="chat-count">0</span>
         </div>
-
-        <div id="messages" class="messages"></div>
-
-        <form id="chatForm" class="chat-form">
-          <input id="chatInput" maxlength="240" placeholder="Say something..." required>
-          <button class="primary">Send</button>
+        <div class="chat-messages" id="chat-messages">
+          <div class="empty">Messages from your room will appear here.</div>
+        </div>
+        <form class="chat-input-row" id="chat-form">
+          <input class="field" id="chat-input" maxlength="400" placeholder="Say something..." autocomplete="off">
+          <button class="btn primary" type="submit">SEND</button>
         </form>
-      </aside>
-    </div>
-  </section>
+      </section>
 
-  <section id="playlistView" class="hidden">
-    <div class="eyebrow">003 / QUEUED FOR LATER</div>
-    <h2>The shared playlist</h2>
-    <p>Load a YouTube video in a room to add it to the shared lineup.</p>
-    <div class="panel" id="playlist"></div>
-  </section>
+      <section class="panel">
+        <div class="side-heading">
+          <h3>UP NEXT</h3>
+          <span class="count" id="playlist-count">0 TRACKS</span>
+        </div>
+        <form class="playlist-form" id="playlist-form">
+          <input class="field" id="playlist-url" placeholder="YouTube URL or ID">
+          <button class="btn primary" type="submit">ADD</button>
+        </form>
+        <div class="playlist" id="playlist">
+          <div class="empty">Add videos to build your queue.</div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <footer>
+    AFTERHOURS / BUILT FOR LATE-NIGHT WATCH PARTIES.<br>
+    Ping measures your connection to Firebase, not your internet's ICMP ping or YouTube buffering latency.
+    The host controls playback for everyone in the room.
+  </footer>
 </main>
 
-<footer>
-  <span>AFTERHOURS © 2026</span>
-  <span>THE NIGHT IS BETTER SHARED.</span>
-</footer>
+<div id="setup">
+  <div class="setup-card">
+    <div class="eyebrow">A LITTLE LESS ALONE</div>
+    <h1>AFTER<span>HOURS</span></h1>
+    <p>Watch together, even when you're apart. Create a room or join your friends with a room code.</p>
 
-<div id="modalBack" class="modal-back hidden">
-  <div class="modal">
-    <div class="eyebrow">AFTERHOURS / ROOM ACCESS</div>
-    <h2 id="modalTitle">Create your room</h2>
-    <p id="modalDescription">Pick a name to get started.</p>
-    <input id="nameInput" maxlength="24" placeholder="Your name" value="You">
-    <input id="codeInput" class="hidden" maxlength="6" placeholder="Six-character room code">
-    <div class="modal-actions">
-      <button id="cancelBtn">Cancel</button>
-      <button class="primary" id="confirmBtn">Let's go ↗</button>
-    </div>
+    <label for="username">YOUR DISPLAY NAME</label>
+    <input id="username" class="field" maxlength="24" placeholder="What should we call you?">
+
+    <button class="btn primary" id="create-room">CREATE A ROOM</button>
+
+    <label for="join-code">OR JOIN AN EXISTING ROOM</label>
+    <input id="join-code" class="field" maxlength="6" placeholder="6-CHARACTER ROOM CODE" style="text-transform:uppercase">
+    <button class="btn" id="join-room">JOIN ROOM</button>
   </div>
 </div>
 
-<div id="toast" class="toast hidden"></div>
+<div id="notice" class="hidden"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
-  getDatabase, ref, set, get, update, push, remove,
-  onValue, onChildAdded, onDisconnect, serverTimestamp, runTransaction
+  getDatabase, ref, get, set, update, push, onValue, remove,
+  runTransaction, serverTimestamp, onDisconnect
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 import {
-  getAuth, signInAnonymously, onAuthStateChanged
+  getAuth, signInAnonymously
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+/* Firebase configuration */
 const firebaseConfig = {
-  apiKey: "AIzaSyCtBHlwu_oB2Em5eXF233ia85r0eNhOfF8",
+  apiKey: "AIzaSyCtBHlwu_oB2Em5eXF233ia85r0eNhOf8",
   authDomain: "afterhours-watchparty.firebaseapp.com",
   databaseURL: "https://afterhours-watchparty-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "afterhours-watchparty",
@@ -560,1095 +733,926 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
+
 const $ = id => document.getElementById(id);
 
 let me = null;
-let currentRoom = null;
-let userName = "You";
-let isHost = false;
+let roomId = null;
+let roomRef = null;
 let hostUid = null;
-
-let members = {};
-let playlist = [];
-let votes = {};
-let myVotes = new Set();
-let modalMode = "create";
-let unsubscribers = [];
-
+let isHost = false;
 let player = null;
 let playerReady = false;
-let playerPromise = null;
-let playerGeneration = 0;
-let resolvePlayerReady = null;
-let pendingPlayback = null;
-let currentVideoId = null;
-let apiPromise = null;
-
-let applyingRemote = false;
-let applyingRemoteTimer = null;
-let lastPlaybackRevision = -1;
-let lastLocalPublishAt = 0;
-let lastObservedTime = null;
-let lastObservedAt = 0;
-let lastObservedState = null;
-let lastObservedVideoId = null;
-let toastTimer = null;
-
-function showToast(message) {
-  $("toast").textContent = message;
-  $("toast").classList.remove("hidden");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => $("toast").classList.add("hidden"), 3000);
-}
-
-function setConnection(message, connected = false) {
-  $("connection").textContent = message;
-  $("status").textContent = connected ? "● FIREBASE ONLINE" : "● CHECK CONNECTION";
-  $("status").style.color = connected ? "var(--cyan)" : "var(--pink)";
-}
-
-function roomPath(path = "") {
-  if (!currentRoom) throw new Error("You are not in a room.");
-  return ref(db, `rooms/${currentRoom}${path ? "/" + path : ""}`);
-}
-
-function cleanupListeners() {
-  unsubscribers.forEach(unsubscribe => {
-    try { unsubscribe(); } catch (error) { console.warn(error); }
-  });
-  unsubscribers = [];
-}
-
-function switchView(view) {
-  if (view === "room" && !currentRoom) {
-    showToast("Create or join a room first.");
-    view = "discover";
-  }
-
-  if (view === "playlist" && !currentRoom) {
-    showToast("Join a room to view its playlist.");
-    view = "discover";
-  }
-
-  ["discover", "room", "playlist"].forEach(name => {
-    $(name + "View").classList.toggle("hidden", name !== view);
-  });
-
-  document.querySelectorAll(".navbtn").forEach(button => {
-    button.classList.toggle("active", button.dataset.view === view);
-  });
-
-  if (view === "room") {
-    renderRoom();
-    refreshRoomBar();
-  }
-
-  if (view === "playlist") renderPlaylist();
-}
-
-document.querySelectorAll(".navbtn").forEach(button => {
-  button.addEventListener("click", () => switchView(button.dataset.view));
+let playerReadyPromiseResolve = null;
+let playerReadyPromise = new Promise(resolve => {
+  playerReadyPromiseResolve = resolve;
 });
 
-function openModal(mode) {
-  if (!me) {
-    showToast("Firebase is still connecting. Try again in a moment.");
-    return;
-  }
+let remotePlayback = null;
+let applyingRemote = false;
+let lastRemoteRevision = -1;
+let lastLocalRevision = 0;
+let lastPublishedSecond = -1;
+let seekDragging = false;
+let roomUnsubs = [];
+let pingTimer = null;
+let syncTimer = null;
+let heartbeatTimer = null;
+let isLeaving = false;
+let knownMembers = {};
+let videoMetadata = {};
+let lastPlaybackSignature = "";
+let noticeTimer = null;
 
-  modalMode = mode;
-  $("modalTitle").textContent = mode === "create" ? "Create your room" : "Join a room";
-  $("modalDescription").textContent = mode === "create"
-    ? "Choose your name and generate an invite code."
-    : "Enter the six-character code from your host.";
+const DEFAULT_VIDEO = "jfKfPfyJRdk";
+const EMOJIS = ["❤️","😂","🔥","😭","💀","👏"];
 
-  $("codeInput").classList.toggle("hidden", mode !== "join");
-  $("modalBack").classList.remove("hidden");
-  $("nameInput").focus();
+function notify(message) {
+  $("notice").textContent = message;
+  $("notice").classList.remove("hidden");
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => $("notice").classList.add("hidden"), 3000);
 }
 
-$("createBtn").onclick = () => openModal("create");
-$("joinBtn").onclick = () => openModal("join");
-$("discoverCreate").onclick = () => openModal("create");
-$("discoverJoin").onclick = () => openModal("join");
-$("openRoomBtn").onclick = () => switchView("room");
-$("cancelBtn").onclick = () => $("modalBack").classList.add("hidden");
+function setConnection(text, good = true) {
+  $("connection").textContent = text;
+  $("connection").style.color = good ? "var(--green)" : "var(--red)";
+}
 
-function generateCode() {
-  const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  return Array.from({ length: 6 }, () =>
-    characters[Math.floor(Math.random() * characters.length)]
-  ).join("");
+function escapeHtml(value = "") {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[ch]));
+}
+
+function formatTime(value) {
+  const seconds = Math.max(0, Math.floor(Number(value) || 0));
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return `${minutes}:${String(remainder).padStart(2,"0")}`;
+}
+
+function parseVideoId(input) {
+  const value = String(input || "").trim();
+  if (/^[\w-]{11}$/.test(value)) return value;
+
+  try {
+    const url = new URL(value);
+    if (url.hostname.includes("youtu.be")) {
+      const id = url.pathname.split("/").filter(Boolean)[0];
+      if (id && /^[\w-]{11}$/.test(id)) return id;
+    }
+
+    const v = url.searchParams.get("v");
+    if (v && /^[\w-]{11}$/.test(v)) return v;
+
+    const parts = url.pathname.split("/").filter(Boolean);
+    const marker = parts.findIndex(x => ["embed","shorts","live"].includes(x));
+    if (marker >= 0 && /^[\w-]{11}$/.test(parts[marker + 1] || "")) {
+      return parts[marker + 1];
+    }
+  } catch {}
+
+  return null;
+}
+
+function getServerNow() {
+  return Date.now() + (window.firebaseServerOffset || 0);
+}
+
+async function pingFirebase() {
+  if (!me || !roomId) return;
+
+  const started = performance.now();
+  try {
+    const pingRef = ref(db, `rooms/${roomId}/pings/${me.uid}`);
+    await set(pingRef, {
+      sentAt: serverTimestamp(),
+      nonce: Math.random().toString(36).slice(2)
+    });
+    const elapsed = Math.round(performance.now() - started);
+    $("ping").textContent = `PING: ${elapsed} ms`;
+    $("ping").style.color = elapsed < 150 ? "var(--cyan)" :
+      elapsed < 350 ? "#ffd27d" : "var(--pink)";
+  } catch {
+    $("ping").textContent = "PING: -- ms";
+  }
+}
+
+async function ensureAuth() {
+  if (auth.currentUser) return auth.currentUser;
+  const result = await signInAnonymously(auth);
+  return result.user;
+}
+
+function generateRoomCode() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return code;
 }
 
 async function createRoom() {
-  let code = "";
+  me = await ensureAuth();
 
-  for (let attempt = 0; attempt < 8; attempt++) {
-    const candidate = generateCode();
-    const snapshot = await get(ref(db, "rooms/" + candidate));
+  const displayName = $("username").value.trim() || "Night Owl";
+  localStorage.setItem("afterhours-name", displayName);
 
-    if (!snapshot.exists()) {
-      code = candidate;
+  let code;
+  let targetRef;
+  let created = false;
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    code = generateRoomCode();
+    targetRef = ref(db, `rooms/${code}`);
+    const result = await runTransaction(targetRef, current => {
+      if (current !== null) return;
+      return {
+        hostUid: me.uid,
+        createdAt: serverTimestamp(),
+        members: {},
+        playback: {
+          videoId: DEFAULT_VIDEO,
+          title: "Lofi Girl — beats to relax/study to",
+          time: 0,
+          paused: true,
+          revision: 1,
+          updatedAt: Date.now()
+        },
+        chat: {},
+        playlist: {},
+        reactions: {}
+      };
+    }, { applyLocally: false });
+
+    if (result.committed) {
+      created = true;
       break;
     }
   }
 
-  if (!code) throw new Error("Could not generate a room code. Try again.");
+  if (!created) throw new Error("Couldn't create a room. Try again.");
 
-  await set(ref(db, "rooms/" + code), {
-    hostUid: me.uid,
-    hostName: userName,
-    createdAt: serverTimestamp(),
-    members: {},
-    playlist: [],
-    votes: {},
-    chat: {},
-    reactions: {},
-    playback: {
-      videoId: "",
-      time: 0,
-      paused: true,
-      title: "No video selected",
-      revision: 0,
-      updatedBy: me.uid,
-      updatedAt: Date.now()
-    }
-  });
-
-  await enterRoom(code);
-  showToast("Room created! Code: " + code);
+  await enterRoom(code, displayName);
 }
 
 async function joinRoom() {
-  const code = $("codeInput").value.trim().toUpperCase();
-
+  me = await ensureAuth();
+  const code = $("join-code").value.trim().toUpperCase();
   if (!/^[A-Z0-9]{6}$/.test(code)) {
-    throw new Error("Enter a valid six-character room code.");
+    notify("Enter a valid 6-character room code.");
+    return;
   }
 
-  const snapshot = await get(ref(db, "rooms/" + code));
-  if (!snapshot.exists()) throw new Error("Room not found. Check the invite code.");
+  const displayName = $("username").value.trim() || "Night Owl";
+  localStorage.setItem("afterhours-name", displayName);
 
-  await enterRoom(code);
-  showToast("Joined room " + code);
-}
-
-function addMessage(name, text) {
-  const message = document.createElement("div");
-  message.className = "message";
-
-  const author = document.createElement("strong");
-  author.textContent = name;
-
-  const content = document.createElement("div");
-  content.textContent = text;
-
-  message.append(author, content);
-  $("messages").appendChild(message);
-  $("messages").scrollTop = $("messages").scrollHeight;
-}
-
-function resetChat() {
-  $("messages").replaceChildren();
-  addMessage("AFTERHOURS BOT", "You're connected. Say hello to the room.");
-}
-
-function resetPlaybackObserver() {
-  lastObservedTime = null;
-  lastObservedAt = 0;
-  lastObservedState = null;
-  lastObservedVideoId = null;
-}
-
-function setApplyingRemote(duration = 900) {
-  applyingRemote = true;
-  clearTimeout(applyingRemoteTimer);
-
-  applyingRemoteTimer = setTimeout(() => {
-    applyingRemote = false;
-    applyingRemoteTimer = null;
-  }, duration);
-}
-
-async function teardownRoom({ removeMember = true } = {}) {
-  const code = currentRoom;
-  cleanupListeners();
-
-  if (code && me && removeMember) {
-    const memberRef = ref(db, `rooms/${code}/members/${me.uid}`);
-
-    try {
-      await onDisconnect(memberRef).cancel();
-      await remove(memberRef);
-    } catch (error) {
-      console.warn("Could not clean up membership:", error);
-    }
+  const snapshot = await get(ref(db, `rooms/${code}`));
+  if (!snapshot.exists()) {
+    notify("Room not found. Check the code.");
+    return;
   }
 
-  currentRoom = null;
-  isHost = false;
+  await enterRoom(code, displayName);
+}
+
+async function enterRoom(code, displayName) {
+  isLeaving = false;
+  roomId = code;
+  roomRef = ref(db, `rooms/${roomId}`);
   hostUid = null;
-  members = {};
-  playlist = [];
-  votes = {};
-  myVotes = new Set();
-  lastPlaybackRevision = -1;
-
-  destroyPlayer();
-
-  $("nowTitle").textContent = "No video selected";
-  $("reactionFeed").textContent = "";
-  $("youtubeUrl").value = "";
-  $("syncStatus").textContent = "WAITING FOR VIDEO";
-
-  $("discoverTitle").textContent = "Nothing playing yet.";
-  $("discoverDescription").textContent =
-    "Create a room or join one with a code. Your shared player appears inside the watch room.";
-  $("openRoomBtn").classList.add("hidden");
-
-  refreshRoomBar();
-  resetChat();
-  renderRoom();
-  renderPlaylist();
-}
-
-async function enterRoom(code) {
-  if (currentRoom) await teardownRoom({ removeMember: true });
-
-  currentRoom = code;
-  lastPlaybackRevision = -1;
-  resetPlaybackObserver();
-  myVotes = new Set();
-
-  refreshRoomBar();
-  switchView("room");
-
-  ensurePlayer().catch(error => {
-    console.error("Player initialization failed:", error);
-    showToast(error.message);
-  });
-
-  const memberRef = ref(db, `rooms/${code}/members/${me.uid}`);
+  isHost = false;
+  lastRemoteRevision = -1;
+  lastPlaybackSignature = "";
 
   try {
-    await set(memberRef, {
-      name: userName,
-      joinedAt: serverTimestamp()
-    });
+    await onDisconnect(ref(db, `rooms/${roomId}/members/${me.uid}`)).remove();
+  } catch {}
 
-    await onDisconnect(memberRef).remove();
-  } catch (error) {
-    await teardownRoom({ removeMember: false });
-    switchView("discover");
-    throw error;
-  }
+  await set(ref(db, `rooms/${roomId}/members/${me.uid}`), {
+    name: displayName,
+    joinedAt: serverTimestamp(),
+    online: true
+  });
 
-  unsubscribers.push(onValue(ref(db, "rooms/" + code), snapshot => {
+  $("room-code").textContent = roomId;
+  $("setup").classList.add("hidden");
+  setConnection("CONNECTED");
+
+  subscribeRoom();
+  startPing();
+  await ensurePlayer();
+  notify(`You're in room ${roomId}`);
+}
+
+function subscribeRoom() {
+  roomUnsubs.forEach(unsub => unsub());
+  roomUnsubs = [];
+
+  roomUnsubs.push(onValue(roomRef, snapshot => {
     if (!snapshot.exists()) {
-      teardownRoom({ removeMember: false });
-      switchView("discover");
-      showToast("This room no longer exists.");
+      notify("This room no longer exists.");
+      leaveRoom(false);
       return;
     }
 
     const data = snapshot.val() || {};
-
+    const previousHost = isHost;
     hostUid = data.hostUid || null;
-    isHost = hostUid === me.uid;
-    members = data.members || {};
-    playlist = Array.isArray(data.playlist) ? data.playlist : [];
-    votes = data.votes || {};
+    isHost = !!me && hostUid === me.uid;
 
-    refreshRoomBar();
-    renderRoom();
-    renderPlaylist();
-  }, error => {
-    console.error("Room listener failed:", error);
-    showToast("Room update failed: " + error.message);
+    $("role-badge").textContent = isHost ? "HOST / YOU" : "GUEST";
+    $("role-badge").classList.toggle("host", isHost);
+    $("host-controls").classList.toggle("hidden", !isHost);
+    $("guest-note").classList.toggle("hidden", isHost);
+
+    if (previousHost !== isHost) {
+      notify(isHost ? "You're now the host." : "Host permissions updated.");
+    }
+
+    knownMembers = data.members || {};
+    const memberCount = Object.keys(knownMembers).length;
+    $("member-count").textContent = `${memberCount} MEMBER${memberCount === 1 ? "" : "S"}`;
+
+    remotePlayback = data.playback || null;
+    if (remotePlayback) applyPlaybackState(remotePlayback);
+
+    renderPlaylist(data.playlist || {});
   }));
 
-  resetChat();
-  addMessage("AFTERHOURS BOT", "Connected to room " + code + ".");
-
-  unsubscribers.push(onChildAdded(ref(db, `rooms/${code}/chat`), snapshot => {
-    const message = snapshot.val();
-    if (message) addMessage(message.name || "Guest", message.text || "");
+  roomUnsubs.push(onValue(ref(db, `rooms/${roomId}/chat`), snapshot => {
+    renderChat(snapshot.val() || {});
   }));
 
-  unsubscribers.push(onChildAdded(ref(db, `rooms/${code}/reactions`), snapshot => {
-    const reaction = snapshot.val();
-    if (reaction) {
-      $("reactionFeed").textContent =
-        `${reaction.name || "Someone"} ${reaction.emoji || "✨"}`;
-    }
-  }));
-
-  let firstPlaybackSnapshot = true;
-
-  unsubscribers.push(onValue(ref(db, `rooms/${code}/playback`), snapshot => {
-    const state = snapshot.val();
-    if (!state) return;
-
-    const firstSnapshot = firstPlaybackSnapshot;
-    firstPlaybackSnapshot = false;
-
-    const revision = Number(state.revision || 0);
-
-    if (!firstSnapshot && revision <= lastPlaybackRevision) return;
-    lastPlaybackRevision = Math.max(lastPlaybackRevision, revision);
-
-    if (state.updatedBy === me.uid && !firstSnapshot) {
-      $("nowTitle").textContent = state.title || "YouTube video";
-      return;
-    }
-
-    applyRemotePlayback(state);
-  }, error => {
-    console.error("Playback listener failed:", error);
-    showToast("Playback sync failed: " + error.message);
-  }));
-
-  refreshRoomBar();
-}
-
-$("confirmBtn").onclick = async () => {
-  if (!me) {
-    showToast("Still connecting to Firebase.");
-    return;
-  }
-
-  userName = $("nameInput").value.trim().slice(0, 24) || "Guest";
-  $("confirmBtn").disabled = true;
-
-  try {
-    if (modalMode === "create") await createRoom();
-    else await joinRoom();
-
-    $("modalBack").classList.add("hidden");
-  } catch (error) {
-    console.error("Room operation failed:", error);
-    showToast("Could not access room: " + (error.message || error.code));
-  } finally {
-    $("confirmBtn").disabled = false;
-  }
-};
-
-$("leaveBtn").onclick = async () => {
-  if (!currentRoom) return;
-
-  await teardownRoom({ removeMember: true });
-  switchView("discover");
-  showToast("You left the room.");
-};
-
-function getSyncLabel() {
-  if (!currentRoom) return "NOT IN ROOM";
-  if (!playerReady || !player || !window.YT || !YT.PlayerState) {
-    return "PLAYER LOADING";
-  }
-
-  try {
-    const state = player.getPlayerState();
-    if (state === YT.PlayerState.PLAYING) return "PLAYING";
-    if (state === YT.PlayerState.PAUSED) return "PAUSED";
-    if (currentVideoId) return "VIDEO READY";
-  } catch (error) {
-    console.warn(error);
-  }
-
-  return "WAITING FOR VIDEO";
-}
-
-function refreshRoomBar() {
-  const inRoom = !!currentRoom;
-  $("roomCode").textContent = currentRoom || "NO ROOM";
-  $("roomRole").textContent = !inRoom
-    ? "PRIVATE SESSION"
-    : isHost ? "● YOU ARE HOST" : "● GUEST SESSION";
-
-  const count = Object.keys(members).length;
-  $("memberCount").textContent = inRoom
-    ? `${count} participant${count === 1 ? "" : "s"}`
-    : "Not in a room";
-
-  $("leaveBtn").classList.toggle("hidden", !inRoom);
-  $("chatStatus").textContent = inRoom ? "LIVE · ROOM" : "NOT IN ROOM";
-  $("syncStatus").textContent = getSyncLabel();
-
-  $("discoverTitle").textContent = inRoom ? "Your room is ready." : "Nothing playing yet.";
-  $("discoverDescription").textContent = inRoom
-    ? `You're in room ${currentRoom}. Open the watch room to watch together.`
-    : "Create a room or join one with a code. Your shared player appears inside the watch room.";
-
-  $("openRoomBtn").classList.toggle("hidden", !inRoom);
-}
-
-$("copyBtn").onclick = async () => {
-  if (!currentRoom) return showToast("Create or join a room first.");
-
-  try {
-    await navigator.clipboard.writeText(currentRoom);
-    showToast("Invite code copied: " + currentRoom);
-  } catch {
-    showToast("Your invite code is " + currentRoom);
-  }
-};
-
-$("chatForm").onsubmit = async event => {
-  event.preventDefault();
-
-  const text = $("chatInput").value.trim();
-  if (!text) return;
-  if (!currentRoom) return showToast("Join a room before chatting.");
-
-  $("chatInput").value = "";
-
-  try {
-    await push(roomPath("chat"), {
-      uid: me.uid,
-      name: userName,
-      text: text.slice(0, 240),
-      createdAt: serverTimestamp()
-    });
-  } catch (error) {
-    showToast("Message failed: " + error.message);
-  }
-};
-
-document.querySelectorAll("[data-emoji]").forEach(button => {
-  button.onclick = async () => {
-    if (!currentRoom) return showToast("Join a room to react.");
-
-    try {
-      await push(roomPath("reactions"), {
-        uid: me.uid,
-        name: userName,
-        emoji: button.dataset.emoji,
-        createdAt: serverTimestamp()
-      });
-    } catch (error) {
-      showToast("Reaction failed: " + error.message);
-    }
-  };
-});
-
-function loadYouTubeAPI() {
-  if (apiPromise) return apiPromise;
-
-  apiPromise = new Promise((resolve, reject) => {
-    if (window.YT && window.YT.Player) {
-      resolve();
-      return;
-    }
-
-    const previousCallback = window.onYouTubeIframeAPIReady;
-
-    window.onYouTubeIframeAPIReady = () => {
-      if (typeof previousCallback === "function") previousCallback();
-      resolve();
-    };
-
-    const script = document.createElement("script");
-    script.src = "https://www.youtube.com/iframe_api";
-    script.onerror = () => {
-      apiPromise = null;
-      reject(new Error("Could not load the YouTube player API."));
-    };
-
-    document.head.appendChild(script);
-  });
-
-  return apiPromise;
-}
-
-function getYouTubeVideoId(value) {
-  try {
-    const url = new URL(value);
-    let id = "";
-
-    if (url.hostname === "youtu.be") {
-      id = url.pathname.slice(1);
-    } else if ([
-      "youtube.com",
-      "www.youtube.com",
-      "m.youtube.com",
-      "music.youtube.com"
-    ].includes(url.hostname)) {
-      if (url.pathname === "/watch") {
-        id = url.searchParams.get("v") || "";
-      } else if (
-        url.pathname.startsWith("/embed/") ||
-        url.pathname.startsWith("/shorts/")
-      ) {
-        id = url.pathname.split("/")[2] || "";
-      }
-    }
-
-    return /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
-  } catch {
-    return null;
-  }
-}
-
-function ensurePlayer() {
-  if (!currentRoom) {
-    return Promise.reject(new Error("Join a room before opening the player."));
-  }
-
-  if (playerPromise) return playerPromise;
-
-  const generation = ++playerGeneration;
-
-  playerPromise = (async () => {
-    await loadYouTubeAPI();
-
-    if (generation !== playerGeneration || !currentRoom) {
-      throw new Error("Player initialization was cancelled.");
-    }
-
-    await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        resolvePlayerReady = null;
-        reject(new Error("YouTube player did not become ready. Reload and try again."));
-      }, 15000);
-
-      resolvePlayerReady = () => {
-        clearTimeout(timeout);
-        resolve();
-      };
-
-      player = new YT.Player("youtubePlayer", {
-        width: "100%",
-        height: "100%",
-        playerVars: {
-          playsinline: 1,
-          controls: 1,
-          rel: 0
-        },
-        events: {
-          onReady: () => {
-            if (generation !== playerGeneration) return;
-
-            playerReady = true;
-
-            if (resolvePlayerReady) {
-              const finish = resolvePlayerReady;
-              resolvePlayerReady = null;
-              finish();
-            }
-
-            $("syncStatus").textContent = getSyncLabel();
-
-            if (pendingPlayback) {
-              const state = pendingPlayback;
-              pendingPlayback = null;
-              applyRemotePlayback(state);
-            }
-          },
-
-          onStateChange: event => {
-            if (generation !== playerGeneration || !playerReady) return;
-
-            if (event.data === YT.PlayerState.PLAYING) {
-              $("syncStatus").textContent = "PLAYING";
-              $("nowTitle").textContent =
-                player.getVideoData()?.title || "YouTube video";
-
-              if (!applyingRemote && currentRoom && currentVideoId) {
-                publishPlayback(false);
-              }
-            } else if (event.data === YT.PlayerState.PAUSED) {
-              $("syncStatus").textContent = "PAUSED";
-
-              if (!applyingRemote && currentRoom && currentVideoId) {
-                publishPlayback(true);
-              }
-            } else if (event.data === YT.PlayerState.ENDED) {
-              $("syncStatus").textContent = "VIDEO ENDED";
-
-              if (!applyingRemote && currentRoom && currentVideoId) {
-                publishPlayback(true);
-              }
-            } else if (event.data === YT.PlayerState.BUFFERING) {
-              $("syncStatus").textContent = "BUFFERING";
-            } else if (event.data === YT.PlayerState.CUED) {
-              $("syncStatus").textContent = "VIDEO READY";
-
-              if (pendingPlayback && pendingPlayback.videoId === currentVideoId) {
-                const state = pendingPlayback;
-                pendingPlayback = null;
-                applyRemotePlayback(state);
-              }
-            }
-          },
-
-          onError: event => {
-            console.warn("YouTube player error:", event.data);
-            showToast("This video may not allow embedded playback.");
-          }
+  roomUnsubs.push(onValue(ref(db, `rooms/${roomId}/reactions`), snapshot => {
+    const data = snapshot.val() || {};
+    const cutoff = Date.now() - 8000;
+    Object.entries(data).forEach(([id, reaction]) => {
+      if (!reaction || !reaction.createdAt) return;
+      if (reaction.createdAt > cutoff) {
+        const seenKey = `reaction_${roomId}_${id}`;
+        if (!window.seenReactions.has(seenKey)) {
+          window.seenReactions.add(seenKey);
+          showFloatingReaction(reaction.emoji, reaction.x);
         }
-      });
-    });
-  })().catch(error => {
-    playerPromise = null;
-    throw error;
-  });
-
-  return playerPromise;
-}
-
-function destroyPlayer() {
-  playerGeneration++;
-
-  if (resolvePlayerReady) {
-    const finish = resolvePlayerReady;
-    resolvePlayerReady = null;
-    finish();
-  }
-
-  clearTimeout(applyingRemoteTimer);
-  applyingRemoteTimer = null;
-
-  try {
-    if (player && typeof player.destroy === "function") player.destroy();
-  } catch (error) {
-    console.warn("Could not destroy player:", error);
-  }
-
-  player = null;
-  playerReady = false;
-  playerPromise = null;
-  pendingPlayback = null;
-  currentVideoId = null;
-  applyingRemote = false;
-  resetPlaybackObserver();
-
-  const mount = document.createElement("div");
-  mount.id = "youtubePlayer";
-  $("playerBox").replaceChildren(mount);
-}
-
-async function writePlayback(state) {
-  if (!currentRoom || !me) return;
-
-  const playbackRef = roomPath("playback");
-
-  const result = await runTransaction(playbackRef, current => {
-    const previous = current || {};
-
-    return {
-      ...previous,
-      ...state,
-      revision: Number(previous.revision || 0) + 1,
-      updatedBy: me.uid,
-      updatedAt: Date.now()
-    };
-  });
-
-  if (!result.committed) {
-    throw new Error("Playback update was not committed.");
-  }
-}
-
-async function loadSharedVideo(videoId) {
-  if (!currentRoom) throw new Error("Join a room before loading a video.");
-
-  await ensurePlayer();
-
-  if (!player || !playerReady) {
-    throw new Error("The player isn't available. Try again shortly.");
-  }
-
-  currentVideoId = videoId;
-  pendingPlayback = null;
-
-  $("nowTitle").textContent = "Loading video...";
-  $("syncStatus").textContent = "SYNCING";
-
-  setApplyingRemote(1800);
-  player.cueVideoById({ videoId, startSeconds: 0 });
-}
-
-async function applyRemotePlayback(state) {
-  if (!state || !state.videoId) {
-    $("nowTitle").textContent = "No video selected";
-    $("syncStatus").textContent = "WAITING FOR VIDEO";
-    return;
-  }
-
-  if (!currentRoom) return;
-
-  if (!player || !playerReady) {
-    pendingPlayback = state;
-
-    ensurePlayer().catch(error => {
-      console.error("Could not initialize player:", error);
-      showToast(error.message);
-    });
-
-    $("syncStatus").textContent = "PLAYER LOADING";
-    return;
-  }
-
-  if (state.videoId !== currentVideoId) {
-    currentVideoId = state.videoId;
-    pendingPlayback = state;
-    setApplyingRemote(5000);
-
-    try {
-      player.cueVideoById({
-        videoId: state.videoId,
-        startSeconds: Math.max(0, Number(state.time) || 0)
-      });
-    } catch (error) {
-      pendingPlayback = null;
-      applyingRemote = false;
-      clearTimeout(applyingRemoteTimer);
-      applyingRemoteTimer = null;
-      console.warn("Could not cue remote video:", error);
-    }
-
-    return;
-  }
-
-  setApplyingRemote(1200);
-
-  try {
-    const targetTime = Math.max(0, Number(state.time) || 0);
-    const currentTime = player.getCurrentTime();
-    const playerState = player.getPlayerState();
-
-    if (Number.isFinite(currentTime) && Math.abs(currentTime - targetTime) > 0.75) {
-      player.seekTo(targetTime, true);
-    }
-
-    if (state.paused) {
-      if (
-        playerState !== YT.PlayerState.PAUSED &&
-        playerState !== YT.PlayerState.CUED &&
-        playerState !== YT.PlayerState.UNSTARTED
-      ) {
-        player.pauseVideo();
       }
-    } else if (
-      playerState !== YT.PlayerState.PLAYING &&
-      playerState !== YT.PlayerState.BUFFERING
-    ) {
-      player.playVideo();
-    }
-
-    $("nowTitle").textContent = state.title || "YouTube video";
-    $("syncStatus").textContent = "SYNCED";
-  } catch (error) {
-    console.warn("Could not apply remote playback:", error);
-  }
+    });
+  }));
 }
 
-$("loadYoutube").onclick = async () => {
-  const videoId = getYouTubeVideoId($("youtubeUrl").value.trim());
-
-  if (!videoId) return showToast("Paste a valid YouTube video link.");
-  if (!currentRoom) return showToast("Create or join a room before loading a video.");
-
-  $("loadYoutube").disabled = true;
-
-  try {
-    await loadSharedVideo(videoId);
-
-    await writePlayback({
-      videoId,
-      title: "YouTube video",
-      time: 0,
-      paused: true
-    });
-
-    if (!playlist.includes(videoId)) {
-      await set(roomPath("playlist"), [...playlist, videoId]);
-    }
-
-    $("nowTitle").textContent = "YouTube video";
-    $("syncStatus").textContent = "VIDEO SHARED";
-    showToast("Video shared with the room.");
-  } catch (error) {
-    console.error("Video sharing failed:", error);
-    showToast("Could not share video: " + error.message);
-  } finally {
-    $("loadYoutube").disabled = false;
+async function ensurePlayer() {
+  if (playerReady) return;
+  if (window.YT && window.YT.Player) {
+    createPlayer();
+    return playerReadyPromise;
   }
+
+  if (!document.getElementById("youtube-api")) {
+    const tag = document.createElement("script");
+    tag.id = "youtube-api";
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  }
+
+  return playerReadyPromise;
+}
+
+window.onYouTubeIframeAPIReady = () => {
+  createPlayer();
 };
 
-function publishPlayback(paused) {
-  if (
-    !currentRoom || !me || applyingRemote ||
-    !player || !playerReady || !currentVideoId
-  ) return;
+function createPlayer() {
+  if (player || !window.YT || !window.YT.Player) return;
 
-  const now = Date.now();
-  if (now - lastLocalPublishAt < 500) return;
-  lastLocalPublishAt = now;
-
-  try {
-    const title = player.getVideoData()?.title || "YouTube video";
-    const time = player.getCurrentTime() || 0;
-
-    writePlayback({ videoId: currentVideoId, title, time, paused }).catch(error => {
-      $("syncStatus").textContent = "SYNC ERROR";
-      console.warn("Playback sync failed:", error);
-    });
-  } catch (error) {
-    console.warn("Could not read playback state:", error);
-  }
-}
-
-function monitorLocalSeek() {
-  if (!currentRoom || !player || !playerReady || !currentVideoId || !window.YT) {
-    resetPlaybackObserver();
-    return;
-  }
-
-  try {
-    const now = performance.now();
-    const time = player.getCurrentTime();
-    const state = player.getPlayerState();
-
-    const eligible =
-      state === YT.PlayerState.PLAYING ||
-      state === YT.PlayerState.PAUSED;
-
-    if (!eligible || !Number.isFinite(time)) {
-      resetPlaybackObserver();
-      lastObservedState = state;
-      lastObservedVideoId = currentVideoId;
-      return;
-    }
-
-    if (
-      lastObservedTime !== null &&
-      lastObservedVideoId === currentVideoId &&
-      lastObservedState === state &&
-      !applyingRemote
-    ) {
-      const elapsed = (now - lastObservedAt) / 1000;
-      const expectedTime = state === YT.PlayerState.PLAYING
-        ? lastObservedTime + elapsed
-        : lastObservedTime;
-
-      if (Math.abs(time - expectedTime) > 1.0) {
-        publishPlayback(state === YT.PlayerState.PAUSED);
+  player = new YT.Player("player", {
+    width: "100%",
+    height: "100%",
+    videoId: DEFAULT_VIDEO,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      disablekb: 1,
+      fs: 1,
+      playsinline: 1,
+      rel: 0,
+      origin: location.origin
+    },
+    events: {
+      onReady: () => {
+        playerReady = true;
+        playerReadyPromiseResolve();
+        $("player-status").textContent = "READY";
+        updateHostControlState();
+        if (remotePlayback) applyPlaybackState(remotePlayback);
+      },
+      onStateChange: event => handlePlayerState(event),
+      onError: event => {
+        notify(`YouTube player error: ${event.data}`);
       }
     }
+  });
+}
 
-    lastObservedTime = time;
-    lastObservedAt = now;
-    lastObservedState = state;
-    lastObservedVideoId = currentVideoId;
-  } catch (error) {
-    console.warn("Seek detection failed:", error);
+function updateHostControlState() {
+  $("play-pause").textContent =
+    player && player.getPlayerState() === YT.PlayerState.PLAYING ? "Ⅱ PAUSE" : "▶ PLAY";
+}
+
+function playerVideoId() {
+  try {
+    const data = player?.getVideoData?.();
+    return data?.video_id || "";
+  } catch {
+    return "";
   }
 }
 
-setInterval(monitorLocalSeek, 250);
+function playerTime() {
+  try {
+    return player?.getCurrentTime?.() || 0;
+  } catch {
+    return 0;
+  }
+}
 
-setInterval(() => {
-  if (
-    !currentRoom || !isHost || !player || !playerReady ||
-    !currentVideoId || applyingRemote || !window.YT
-  ) return;
+function playerDuration() {
+  try {
+    return player?.getDuration?.() || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function isPlayerPlaying() {
+  return player && player.getPlayerState() === YT.PlayerState.PLAYING;
+}
+
+/*
+ * The host is the only client allowed to publish playback state.
+ * updatedAt is a server-time estimate so guests can calculate where
+ * the video should be when their copy receives the update.
+ */
+async function publishPlayback(overrides = {}) {
+  if (!isHost || !roomId || !playerReady || applyingRemote || isLeaving) return;
+
+  const videoId = overrides.videoId || playerVideoId() || DEFAULT_VIDEO;
+  const title = overrides.title ||
+    player?.getVideoData?.()?.title ||
+    videoMetadata[videoId]?.title ||
+    videoId;
+
+  const current = remotePlayback || {};
+  const next = {
+    videoId,
+    title,
+    time: overrides.time ?? playerTime(),
+    paused: overrides.paused ?? !isPlayerPlaying(),
+    revision: Math.max(Number(current.revision || 0), lastLocalRevision) + 1,
+    updatedAt: getServerNow(),
+    updatedBy: me.uid
+  };
+
+  lastLocalRevision = next.revision;
+  lastPublishedSecond = Math.floor(next.time);
+  lastPlaybackSignature = `${next.videoId}:${next.paused}:${Math.floor(next.time)}`;
 
   try {
-    if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-      publishPlayback(false);
+    await set(ref(db, `rooms/${roomId}/playback`), next);
+    remotePlayback = next;
+    updateVideoLabels(next);
+  } catch (error) {
+    console.error(error);
+    notify("Couldn't update playback. Check your connection.");
+  }
+}
+
+function handlePlayerState(event) {
+  updateHostControlState();
+
+  if (applyingRemote) return;
+
+  if (event.data === YT.PlayerState.PLAYING) {
+    $("player-status").textContent = "PLAYING";
+  } else if (event.data === YT.PlayerState.PAUSED) {
+    $("player-status").textContent = "PAUSED";
+  } else if (event.data === YT.PlayerState.BUFFERING) {
+    $("player-status").textContent = "BUFFERING";
+  } else if (event.data === YT.PlayerState.ENDED) {
+    $("player-status").textContent = "ENDED";
+    if (isHost) playNextFromQueue();
+  }
+
+  // A guest's local player events must never overwrite shared playback.
+  if (!isHost) return;
+
+  if (event.data === YT.PlayerState.PLAYING) {
+    publishPlayback({ paused: false });
+  } else if (event.data === YT.PlayerState.PAUSED) {
+    publishPlayback({ paused: true });
+  }
+}
+
+function updateVideoLabels(state) {
+  if (!state) return;
+  $("video-title").textContent = state.title || state.videoId || "Unknown video";
+  $("video-subtitle").textContent = state.paused
+    ? "Paused by host"
+    : "Watching together";
+  $("player-status").textContent = state.paused ? "PAUSED" : "PLAYING";
+}
+
+async function applyPlaybackState(state) {
+  if (!state || !state.videoId || !playerReady || !player) return;
+  if (Number(state.revision || 0) < lastRemoteRevision) return;
+
+  lastRemoteRevision = Number(state.revision || 0);
+  updateVideoLabels(state);
+
+  const id = state.videoId;
+  const currentId = playerVideoId();
+
+  let target = Number(state.time || 0);
+  if (!state.paused && state.updatedAt) {
+    target += Math.max(0, (getServerNow() - Number(state.updatedAt)) / 1000);
+  }
+
+  const signature = `${id}:${state.paused}:${state.revision}`;
+  const videoChanged = currentId !== id;
+
+  if (!videoChanged) {
+    const drift = Math.abs(playerTime() - target);
+    const currentState = player.getPlayerState();
+
+    if (drift > 1.25) {
+      withRemoteGuard(() => player.seekTo(target, true));
     }
-  } catch (error) {
-    console.warn("Host playback heartbeat failed:", error);
-  }
-}, 1500);
 
-function safeKey(value) {
-  return value.replace(/[.#$/\[\]]/g, "_");
+    if (state.paused && currentState !== YT.PlayerState.PAUSED &&
+        currentState !== YT.PlayerState.CUED && currentState !== YT.PlayerState.ENDED) {
+      withRemoteGuard(() => player.pauseVideo());
+    } else if (!state.paused && currentState !== YT.PlayerState.PLAYING) {
+      withRemoteGuard(() => player.playVideo());
+    }
+  } else {
+    withRemoteGuard(() => {
+      player.loadVideoById({ videoId: id, startSeconds: target });
+      if (state.paused) player.pauseVideo();
+    });
+  }
+
+  if (signature !== lastPlaybackSignature) {
+    lastPlaybackSignature = signature;
+  }
 }
 
-async function castVote(videoId) {
-  if (!currentRoom) return showToast("Join a room before voting.");
-  if (myVotes.has(videoId)) return showToast("You've already voted for this video.");
+function withRemoteGuard(callback) {
+  applyingRemote = true;
+  try {
+    callback();
+  } finally {
+    // YouTube state events can arrive asynchronously; keep the guard long
+    // enough to prevent those events from being republished as host actions.
+    setTimeout(() => {
+      applyingRemote = false;
+    }, 900);
+  }
+}
+
+/* Host playback actions */
+async function hostTogglePlayback() {
+  if (!isHost || !playerReady) return notify("Only the host can control playback.");
+
+  if (isPlayerPlaying()) {
+    player.pauseVideo();
+    await publishPlayback({ paused: true });
+  } else {
+    player.playVideo();
+    await publishPlayback({ paused: false });
+  }
+}
+
+async function hostSeek(delta) {
+  if (!isHost || !playerReady) return notify("Only the host can seek.");
+
+  const duration = playerDuration();
+  const target = Math.max(0, Math.min(duration || Infinity, playerTime() + delta));
+  player.seekTo(target, true);
+  await publishPlayback({ time: target, paused: !isPlayerPlaying() });
+}
+
+async function hostSetSeek(value) {
+  if (!isHost || !playerReady) return;
+  const target = Math.max(0, Math.min(playerDuration(), Number(value)));
+  player.seekTo(target, true);
+  await publishPlayback({ time: target, paused: !isPlayerPlaying() });
+}
+
+async function hostLoadVideo(input) {
+  if (!isHost) return notify("Only the host can change the video.");
+
+  const id = parseVideoId(input);
+  if (!id) return notify("That doesn't look like a valid YouTube URL or ID.");
 
   try {
-    await set(roomPath(`votes/${safeKey(videoId)}/${me.uid}`), {
-      name: userName,
-      videoId,
+    player.loadVideoById({ videoId: id, startSeconds: 0 });
+    const next = {
+      videoId: id,
+      title: id,
+      time: 0,
+      paused: false,
+      revision: Math.max(Number(remotePlayback?.revision || 0), lastLocalRevision) + 1,
+      updatedAt: getServerNow(),
+      updatedBy: me.uid
+    };
+
+    lastLocalRevision = next.revision;
+    await set(ref(db, `rooms/${roomId}/playback`), next);
+    remotePlayback = next;
+    $("video-url").value = "";
+    updateVideoLabels(next);
+    notify("Video updated for the room.");
+  } catch (error) {
+    console.error(error);
+    notify("Couldn't load that video.");
+  }
+}
+
+async function playNextFromQueue() {
+  if (!isHost) return;
+  const snapshot = await get(ref(db, `rooms/${roomId}/playlist`));
+  if (!snapshot.exists()) return;
+
+  const items = Object.entries(snapshot.val())
+    .map(([id, item]) => ({ id, ...item }))
+    .sort((a,b) => (b.votes || 0) - (a.votes || 0));
+
+  if (items.length) {
+    const next = items[0];
+    await hostLoadVideo(next.videoId);
+    await remove(ref(db, `rooms/${roomId}/playlist/${next.id}`));
+  }
+}
+
+/* Host-only seek slider */
+$("play-pause").addEventListener("click", hostTogglePlayback);
+$("back-10").addEventListener("click", () => hostSeek(-10));
+$("forward-10").addEventListener("click", () => hostSeek(10));
+$("load-video").addEventListener("click", () => hostLoadVideo($("video-url").value));
+$("video-url").addEventListener("keydown", event => {
+  if (event.key === "Enter") hostLoadVideo($("video-url").value);
+});
+$("sync-now").addEventListener("click", async () => {
+  if (!isHost) return notify("Only the host can sync playback.");
+  await publishPlayback();
+  notify("Playback state sent to the room.");
+});
+
+$("seek").addEventListener("pointerdown", () => {
+  if (!isHost) return;
+  seekDragging = true;
+});
+$("seek").addEventListener("input", () => {
+  if (!isHost || !playerReady) return;
+  $("current-time").textContent = formatTime($("seek").value);
+});
+$("seek").addEventListener("change", async () => {
+  if (!isHost || !playerReady) return;
+  await hostSetSeek($("seek").value);
+  seekDragging = false;
+});
+$("seek").addEventListener("pointerup", () => {
+  seekDragging = false;
+});
+
+/* Keep the host's player and shared state aligned. Guests only correct drift. */
+syncTimer = setInterval(async () => {
+  if (!playerReady || !roomId || !remotePlayback) return;
+
+  const duration = playerDuration();
+  const current = playerTime();
+
+  if (!seekDragging) {
+    $("seek").max = Math.max(1, duration);
+    $("seek").value = Math.min(current, duration || current);
+    $("current-time").textContent = formatTime(current);
+    $("duration").textContent = formatTime(duration);
+  }
+
+  updateHostControlState();
+
+  if (isHost && isPlayerPlaying() && !applyingRemote) {
+    const second = Math.floor(current);
+    // Publish periodically, not on every tiny time change.
+    if (second !== lastPublishedSecond && second % 3 === 0) {
+      await publishPlayback({ time: current, paused: false });
+    }
+  } else if (!isHost && !applyingRemote) {
+    const state = remotePlayback;
+    if (state && !state.paused && state.videoId === playerVideoId()) {
+      const target = Number(state.time || 0) +
+        Math.max(0, (getServerNow() - Number(state.updatedAt || getServerNow())) / 1000);
+      const drift = Math.abs(playerTime() - target);
+
+      // Correct larger drift without repeatedly seeking the video.
+      if (drift > 2.5) {
+        withRemoteGuard(() => player.seekTo(target, true));
+      }
+      if (!isPlayerPlaying()) {
+        withRemoteGuard(() => player.playVideo());
+      }
+    }
+  }
+}, 1000);
+
+/* Chat */
+$("chat-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!roomId || !me) return;
+
+  const text = $("chat-input").value.trim();
+  if (!text) return;
+
+  $("chat-input").value = "";
+  try {
+    await push(ref(db, `rooms/${roomId}/chat`), {
+      uid: me.uid,
+      name: localStorage.getItem("afterhours-name") || "Night Owl",
+      text,
       createdAt: serverTimestamp()
     });
-
-    myVotes.add(videoId);
-    showToast("Vote recorded.");
   } catch (error) {
-    showToast("Vote failed: " + error.message);
+    console.error(error);
+    notify("Message didn't send.");
   }
-}
+});
 
-function renderRoom() {
-  $("roomDescription").textContent = currentRoom
-    ? `Room code: ${currentRoom}. Share it with friends so they can join.`
-    : "Create or join a room to begin.";
+function renderChat(data) {
+  const messages = Object.entries(data)
+    .map(([id, value]) => ({ id, ...value }))
+    .sort((a,b) => (a.createdAt || 0) - (b.createdAt || 0))
+    .slice(-100);
 
-  $("members").replaceChildren();
+  $("chat-count").textContent = messages.length;
+  const container = $("chat-messages");
 
-  const people = Object.entries(members);
-
-  if (!people.length) {
-    $("members").textContent = "No participants";
-  }
-
-  people.forEach(([uid, person]) => {
-    const row = document.createElement("div");
-    row.className = "member";
-
-    row.textContent =
-      (person.name || "Guest") +
-      (uid === me?.uid ? " · You" : "") +
-      (uid === hostUid ? " · Host" : "");
-
-    $("members").appendChild(row);
-  });
-
-  $("pollOptions").replaceChildren();
-
-  if (!playlist.length) {
-    $("pollOptions").textContent = "Load a YouTube video to start the poll.";
+  if (!messages.length) {
+    container.innerHTML = '<div class="empty">No messages yet. Start the conversation.</div>';
     return;
   }
 
-  playlist.forEach(videoId => {
-    const row = document.createElement("div");
-    row.className = "pollrow";
+  container.innerHTML = messages.map(message => `
+    <div class="chat-message">
+      <div class="chat-top">
+        <span class="chat-name">${escapeHtml(message.name || "Night Owl")}</span>
+        <span class="chat-time">${message.createdAt ? new Date(message.createdAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}) : "NOW"}</span>
+      </div>
+      <div class="chat-text">${escapeHtml(message.text || "")}</div>
+    </div>
+  `).join("");
 
-    const button = document.createElement("button");
-    button.textContent = videoId;
-    button.onclick = () => castVote(videoId);
-
-    const count = document.createElement("span");
-    count.className = "vote-count";
-    count.textContent =
-      Object.keys((votes || {})[safeKey(videoId)] || {}).length + " VOTES";
-
-    row.append(button, count);
-    $("pollOptions").appendChild(row);
-  });
+  container.scrollTop = container.scrollHeight;
 }
 
-function renderPlaylist() {
-  $("playlist").replaceChildren();
+/* Floating reactions */
+window.seenReactions = new Set();
 
-  if (!currentRoom) {
-    $("playlist").textContent = "Join a room to view its shared playlist.";
-    return;
-  }
-
-  if (!playlist.length) {
-    $("playlist").textContent = "Nothing queued yet. Load a YouTube video to add it here.";
-    return;
-  }
-
-  playlist.forEach((videoId, index) => {
-    const row = document.createElement("div");
-    row.className = "playlist-row";
-
-    const label = document.createElement("span");
-    label.textContent = `${String(index + 1).padStart(2, "0")} / ${videoId}`;
-
-    const selectButton = document.createElement("button");
-    selectButton.className = "primary";
-    selectButton.textContent = "Select";
-
-    selectButton.onclick = async () => {
-      if (!currentRoom) return showToast("Join a room first.");
-
-      try {
-        await loadSharedVideo(videoId);
-
-        await writePlayback({
-          videoId,
-          time: 0,
-          paused: true,
-          title: "YouTube video"
-        });
-
-        switchView("room");
-      } catch (error) {
-        showToast("Could not select video: " + error.message);
-      }
-    };
-
-    const removeButton = document.createElement("button");
-    removeButton.textContent = "Remove";
-
-    removeButton.onclick = async () => {
-      if (!currentRoom) return showToast("Join a room first.");
-
-      try {
-        await set(
-          roomPath("playlist"),
-          playlist.filter(id => id !== videoId)
-        );
-
-        showToast("Removed from playlist.");
-      } catch (error) {
-        showToast("Could not remove video: " + error.message);
-      }
-    };
-
-    row.append(label, selectButton, removeButton);
-    $("playlist").appendChild(row);
-  });
+function showFloatingReaction(emoji, x) {
+  if (!emoji) return;
+  const layer = $("reaction-layer");
+  const element = document.createElement("span");
+  element.className = "float-reaction";
+  element.textContent = emoji;
+  const left = Math.max(5, Math.min(90, Number(x ?? Math.random() * 85)));
+  element.style.setProperty("--left", `${left}%`);
+  layer.appendChild(element);
+  setTimeout(() => element.remove(), 2500);
 }
 
-$("transferHost").onclick = async () => {
-  if (!currentRoom) return showToast("Join a room first.");
-  if (!isHost) return showToast("Only the host can transfer host.");
+document.querySelectorAll(".reaction-btn").forEach(button => {
+  button.addEventListener("click", async () => {
+    if (!roomId || !me) return;
+    const emoji = button.dataset.emoji;
+    const x = 8 + Math.random() * 82;
 
-  const nextMember = Object.entries(members).find(([uid]) => uid !== me.uid);
-  if (!nextMember) return showToast("Wait for another person to join first.");
+    // Show immediately on this device.
+    showFloatingReaction(emoji, x);
 
+    try {
+      await push(ref(db, `rooms/${roomId}/reactions`), {
+        uid: me.uid,
+        emoji,
+        x,
+        createdAt: Date.now()
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+});
+
+/* Shared playlist and voting */
+$("playlist-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!roomId || !me) return;
+
+  const input = $("playlist-url").value.trim();
+  const videoId = parseVideoId(input);
+  if (!videoId) return notify("Enter a valid YouTube URL or video ID.");
+
+  $("playlist-url").value = "";
   try {
-    await update(roomPath(), {
-      hostUid: nextMember[0],
-      hostName: nextMember[1].name || "Guest"
+    await push(ref(db, `rooms/${roomId}/playlist`), {
+      videoId,
+      title: videoId,
+      addedBy: me.uid,
+      addedByName: localStorage.getItem("afterhours-name") || "Night Owl",
+      votes: 0,
+      voters: {},
+      createdAt: serverTimestamp()
     });
-
-    showToast("Host transferred.");
   } catch (error) {
-    showToast("Transfer failed: " + error.message);
-  }
-};
-
-window.addEventListener("beforeunload", () => {
-  if (currentRoom && me) {
-    remove(ref(db, `rooms/${currentRoom}/members/${me.uid}`));
+    console.error(error);
+    notify("Couldn't add the video.");
   }
 });
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    me = user;
-    setConnection("Connected to server. Create a room or join with a code.", true);
-    console.log("AFTERHOURS Firebase connected.");
+function renderPlaylist(data) {
+  const entries = Object.entries(data)
+    .map(([id, value]) => ({ id, ...value }))
+    .sort((a,b) => (b.votes || 0) - (a.votes || 0));
+
+  $("playlist-count").textContent = `${entries.length} TRACK${entries.length === 1 ? "" : "S"}`;
+  const container = $("playlist");
+
+  if (!entries.length) {
+    container.innerHTML = '<div class="empty">Your queue is empty.<br>Add a YouTube video above.</div>';
+    return;
+  }
+
+  container.innerHTML = entries.map(item => {
+    const voted = !!item.voters?.[me?.uid];
+    return `
+      <div class="track">
+        <div class="track-info">
+          <div class="track-title">${escapeHtml(item.title || item.videoId)}</div>
+          <div class="track-added">Added by ${escapeHtml(item.addedByName || "someone")}</div>
+        </div>
+        <button class="vote-btn" data-vote="${escapeHtml(item.id)}" title="Vote for this video">
+          ${voted ? "✓ " : "▲ "}${Number(item.votes || 0)}
+        </button>
+        ${isHost ? `<button class="btn small" data-play="${escapeHtml(item.id)}">PLAY</button>` : ""}
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-vote]").forEach(button => {
+    button.addEventListener("click", async () => {
+      const id = button.dataset.vote;
+      const itemRef = ref(db, `rooms/${roomId}/playlist/${id}`);
+
+      await runTransaction(itemRef, item => {
+        if (!item) return item;
+        item.voters = item.voters || {};
+        if (item.voters[me.uid]) {
+          delete item.voters[me.uid];
+          item.votes = Math.max(0, Number(item.votes || 0) - 1);
+        } else {
+          item.voters[me.uid] = true;
+          item.votes = Number(item.votes || 0) + 1;
+        }
+        return item;
+      });
+    });
+  });
+
+  container.querySelectorAll("[data-play]").forEach(button => {
+    button.addEventListener("click", async () => {
+      if (!isHost) return notify("Only the host can change videos.");
+      const id = button.dataset.play;
+      const itemRef = ref(db, `rooms/${roomId}/playlist/${id}`);
+      const snapshot = await get(itemRef);
+      if (!snapshot.exists()) return;
+
+      const item = snapshot.val();
+      await hostLoadVideo(item.videoId);
+      await remove(itemRef);
+    });
+  });
+}
+
+/* Room actions */
+$("copy-code").addEventListener("click", async () => {
+  if (!roomId) return;
+  await navigator.clipboard.writeText(roomId);
+  notify("Room code copied.");
+});
+
+$("copy-link").addEventListener("click", async () => {
+  if (!roomId) return;
+  const url = new URL(location.href);
+  url.searchParams.set("room", roomId);
+  await navigator.clipboard.writeText(url.toString());
+  notify("Invite link copied.");
+});
+
+function startPing() {
+  clearInterval(pingTimer);
+  pingFirebase();
+  pingTimer = setInterval(pingFirebase, 5000);
+}
+
+async function leaveRoom(showSetup = true) {
+  if (isLeaving) return;
+  isLeaving = true;
+
+  clearInterval(pingTimer);
+  roomUnsubs.forEach(unsub => unsub());
+  roomUnsubs = [];
+
+  if (roomId && me) {
+    try {
+      await remove(ref(db, `rooms/${roomId}/members/${me.uid}`));
+      await remove(ref(db, `rooms/${roomId}/pings/${me.uid}`));
+    } catch {}
+  }
+
+  roomId = null;
+  roomRef = null;
+  hostUid = null;
+  isHost = false;
+  remotePlayback = null;
+  lastRemoteRevision = -1;
+  lastPlaybackSignature = "";
+  knownMembers = {};
+
+  $("room-code").textContent = "------";
+  $("host-controls").classList.add("hidden");
+  $("guest-note").classList.remove("hidden");
+  $("role-badge").textContent = "NO ROOM";
+  $("role-badge").classList.remove("host");
+  $("video-title").textContent = "Waiting for a video...";
+  $("video-subtitle").textContent = "Create a room and invite your friends.";
+  $("member-count").textContent = "0 MEMBERS";
+  $("ping").textContent = "PING: -- ms";
+  setConnection("DISCONNECTED", false);
+
+  if (showSetup) {
+    $("setup").classList.remove("hidden");
+  }
+}
+
+$("leave-room").addEventListener("click", () => leaveRoom(true));
+$("create-room").addEventListener("click", async () => {
+  try {
+    $("create-room").disabled = true;
+    await createRoom();
+  } catch (error) {
+    console.error(error);
+    notify(error.message || "Couldn't create the room.");
+  } finally {
+    $("create-room").disabled = false;
   }
 });
 
-signInAnonymously(auth).catch(error => {
-  console.error("Firebase authentication failed:", error);
-  setConnection(
-    "Authentication failed: " + error.code +
-    ". Check that Anonymous sign-in is enabled in Firebase.",
-    false
-  );
+$("join-room").addEventListener("click", async () => {
+  try {
+    $("join-room").disabled = true;
+    await joinRoom();
+  } catch (error) {
+    console.error(error);
+    notify(error.message || "Couldn't join the room.");
+  } finally {
+    $("join-room").disabled = false;
+  }
 });
 
-resetChat();
-refreshRoomBar();
-renderRoom();
-renderPlaylist();
+$("join-code").addEventListener("keydown", event => {
+  if (event.key === "Enter") $("join-room").click();
+});
+
+/* Display name and initial room invite link */
+$("username").value = localStorage.getItem("afterhours-name") || "";
+
+const initialRoom = new URLSearchParams(location.search).get("room");
+if (initialRoom) {
+  $("join-code").value = initialRoom.toUpperCase();
+}
+
+/* Firebase server time offset */
+onValue(ref(db, ".info/serverTimeOffset"), snapshot => {
+  window.firebaseServerOffset = Number(snapshot.val() || 0);
+});
+
+try {
+  await ensureAuth();
+  setConnection("READY");
+} catch (error) {
+  console.error(error);
+  setConnection("OFFLINE", false);
+  notify("Firebase authentication failed. Check Anonymous sign-in settings.");
+}
 </script>
 </body>
 </html>
