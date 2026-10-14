@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,8 +52,7 @@ input {
   color: var(--text);
 }
 
-button:focus-visible,
-input:focus-visible {
+button:focus-visible, input:focus-visible {
   outline: 2px solid var(--cyan);
   outline-offset: 3px;
 }
@@ -171,6 +171,7 @@ p {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
   gap: 18px;
+  align-items: start;
 }
 
 .player, .panel {
@@ -423,60 +424,83 @@ footer {
     </div>
   </div>
 
+  <!-- DISCOVER: no player or chat here -->
   <section id="discoverView">
-    <div class="layout">
+    <div class="empty">
       <div>
-        <div id="noRoomCard" class="empty">
-          <div>
-            <div class="eyebrow">NO ROOM</div>
-            <h2>Nothing playing yet.</h2>
-            <p>Create a room or join one with a code. The player appears as soon as you're inside.</p>
+        <div class="eyebrow">YOUR NEXT HANGOUT</div>
+        <h2 id="discoverTitle">Nothing playing yet.</h2>
+        <p id="discoverDescription">
+          Create a room or join one with a code. Your shared player appears inside the watch room.
+        </p>
+        <div class="actions" style="justify-content:center;margin-top:18px">
+          <button class="primary" id="discoverCreate">Create a room ↗</button>
+          <button id="discoverJoin">Join a room ↗</button>
+          <button id="openRoomBtn" class="hidden">Open watch room ↗</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WATCH ROOM: player and chat exist only here -->
+  <section id="roomView" class="hidden">
+    <div class="eyebrow">002 / THE HANGOUT</div>
+    <h2>Your room, your rules.</h2>
+    <p id="roomDescription">Create or join a room to begin.</p>
+
+    <div class="layout">
+      <div id="playerCol">
+        <div class="player">
+          <div class="youtube-input">
+            <input id="youtubeUrl" type="url" placeholder="Paste a YouTube link...">
+            <button id="loadYoutube" class="primary" type="button">Load Video</button>
+          </div>
+
+          <div class="youtube-player" id="playerBox">
+            <div id="youtubePlayer"></div>
+          </div>
+
+          <div class="player-info">
+            <div>
+              <div class="eyebrow">NOW PLAYING</div>
+              <strong id="nowTitle">No video selected</strong>
+            </div>
+            <span id="syncStatus" class="muted">WAITING FOR VIDEO</span>
           </div>
         </div>
 
-        <div id="playerCol" class="hidden">
-          <div class="player">
-            <div class="youtube-input">
-              <input id="youtubeUrl" type="url" placeholder="Paste a YouTube link...">
-              <button id="loadYoutube" class="primary" type="button">Load Video</button>
-            </div>
+        <div class="actions" style="margin-top:12px">
+          <button data-emoji="😂">😂</button>
+          <button data-emoji="🔥">🔥</button>
+          <button data-emoji="😭">😭</button>
+          <button data-emoji="👀">👀</button>
+          <button data-emoji="❤️">❤️</button>
+          <span id="reactionFeed" class="muted"></span>
+        </div>
 
-            <div class="youtube-player" id="playerBox">
-              <div id="youtubePlayer"></div>
-            </div>
-
-            <div class="player-info">
-              <div>
-                <div class="eyebrow">NOW PLAYING</div>
-                <strong id="nowTitle">No video selected</strong>
-              </div>
-              <span id="syncStatus" class="muted">NOT SYNCED</span>
-            </div>
+        <div class="panel">
+          <div class="eyebrow">PEOPLE HERE</div>
+          <div id="members">No participants</div>
+          <div class="actions" style="margin-top:18px">
+            <button id="transferHost">Transfer host</button>
           </div>
+        </div>
 
-          <div class="actions" style="margin-top:12px">
-            <button data-emoji="😂">😂</button>
-            <button data-emoji="🔥">🔥</button>
-            <button data-emoji="😭">😭</button>
-            <button data-emoji="👀">👀</button>
-            <button data-emoji="❤️">❤️</button>
-            <span id="reactionFeed" class="muted"></span>
-          </div>
+        <div class="panel">
+          <div class="eyebrow">GROUP POLL</div>
+          <h2>What are we watching?</h2>
+          <p>Vote for a video in the shared playlist.</p>
+          <div id="pollOptions"></div>
         </div>
       </div>
 
       <aside class="panel chat">
         <div class="chat-head">
           <strong>Room chat</strong>
-          <span id="chatStatus" class="muted">NOT IN ROOM</span>
+          <span id="chatStatus" class="muted">LIVE · ROOM</span>
         </div>
 
-        <div id="messages" class="messages">
-          <div class="message">
-            <strong>AFTERHOURS BOT</strong>
-            Create or join a room to chat with friends.
-          </div>
-        </div>
+        <div id="messages" class="messages"></div>
 
         <form id="chatForm" class="chat-form">
           <input id="chatInput" maxlength="240" placeholder="Say something..." required>
@@ -486,31 +510,10 @@ footer {
     </div>
   </section>
 
-  <section id="roomView" class="hidden">
-    <div class="eyebrow">002 / THE HANGOUT</div>
-    <h2>Your room, your rules.</h2>
-    <p id="roomDescription">Create or join a room to begin.</p>
-
-    <div class="panel">
-      <div class="eyebrow">PEOPLE HERE</div>
-      <div id="members">No participants</div>
-      <div class="actions" style="margin-top:18px">
-        <button id="transferHost">Transfer host</button>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="eyebrow">GROUP POLL</div>
-      <h2>What are we watching?</h2>
-      <p>Vote for a video in the shared playlist.</p>
-      <div id="pollOptions"></div>
-    </div>
-  </section>
-
   <section id="playlistView" class="hidden">
     <div class="eyebrow">003 / QUEUED FOR LATER</div>
     <h2>The shared playlist</h2>
-    <p>Load a YouTube video to add it to your room's lineup.</p>
+    <p>Load a YouTube video in a room to add it to the shared lineup.</p>
     <div class="panel" id="playlist"></div>
   </section>
 </main>
@@ -579,19 +582,17 @@ let playerGeneration = 0;
 let resolvePlayerReady = null;
 let pendingPlayback = null;
 let currentVideoId = null;
+let apiPromise = null;
 
 let applyingRemote = false;
 let applyingRemoteTimer = null;
 let lastPlaybackRevision = -1;
-
+let lastLocalPublishAt = 0;
 let lastObservedTime = null;
 let lastObservedAt = 0;
 let lastObservedState = null;
 let lastObservedVideoId = null;
-
 let toastTimer = null;
-let apiPromise = null;
-let lastLocalPublishAt = 0;
 
 function showToast(message) {
   $("toast").textContent = message;
@@ -619,6 +620,16 @@ function cleanupListeners() {
 }
 
 function switchView(view) {
+  if (view === "room" && !currentRoom) {
+    showToast("Create or join a room first.");
+    view = "discover";
+  }
+
+  if (view === "playlist" && !currentRoom) {
+    showToast("Join a room to view its playlist.");
+    view = "discover";
+  }
+
   ["discover", "room", "playlist"].forEach(name => {
     $(name + "View").classList.toggle("hidden", name !== view);
   });
@@ -627,7 +638,11 @@ function switchView(view) {
     button.classList.toggle("active", button.dataset.view === view);
   });
 
-  if (view === "room") renderRoom();
+  if (view === "room") {
+    renderRoom();
+    refreshRoomBar();
+  }
+
   if (view === "playlist") renderPlaylist();
 }
 
@@ -649,10 +664,14 @@ function openModal(mode) {
 
   $("codeInput").classList.toggle("hidden", mode !== "join");
   $("modalBack").classList.remove("hidden");
+  $("nameInput").focus();
 }
 
 $("createBtn").onclick = () => openModal("create");
 $("joinBtn").onclick = () => openModal("join");
+$("discoverCreate").onclick = () => openModal("create");
+$("discoverJoin").onclick = () => openModal("join");
+$("openRoomBtn").onclick = () => switchView("room");
 $("cancelBtn").onclick = () => $("modalBack").classList.add("hidden");
 
 function generateCode() {
@@ -709,7 +728,6 @@ async function joinRoom() {
   }
 
   const snapshot = await get(ref(db, "rooms/" + code));
-
   if (!snapshot.exists()) throw new Error("Room not found. Check the invite code.");
 
   await enterRoom(code);
@@ -733,7 +751,7 @@ function addMessage(name, text) {
 
 function resetChat() {
   $("messages").replaceChildren();
-  addMessage("AFTERHOURS BOT", "Create or join a room to chat with friends.");
+  addMessage("AFTERHOURS BOT", "You're connected. Say hello to the room.");
 }
 
 function resetPlaybackObserver() {
@@ -755,7 +773,6 @@ function setApplyingRemote(duration = 900) {
 
 async function teardownRoom({ removeMember = true } = {}) {
   const code = currentRoom;
-
   cleanupListeners();
 
   if (code && me && removeMember) {
@@ -783,6 +800,12 @@ async function teardownRoom({ removeMember = true } = {}) {
   $("nowTitle").textContent = "No video selected";
   $("reactionFeed").textContent = "";
   $("youtubeUrl").value = "";
+  $("syncStatus").textContent = "WAITING FOR VIDEO";
+
+  $("discoverTitle").textContent = "Nothing playing yet.";
+  $("discoverDescription").textContent =
+    "Create a room or join one with a code. Your shared player appears inside the watch room.";
+  $("openRoomBtn").classList.add("hidden");
 
   refreshRoomBar();
   resetChat();
@@ -798,8 +821,8 @@ async function enterRoom(code) {
   resetPlaybackObserver();
   myVotes = new Set();
 
-  switchView("discover");
   refreshRoomBar();
+  switchView("room");
 
   ensurePlayer().catch(error => {
     console.error("Player initialization failed:", error);
@@ -817,12 +840,14 @@ async function enterRoom(code) {
     await onDisconnect(memberRef).remove();
   } catch (error) {
     await teardownRoom({ removeMember: false });
+    switchView("discover");
     throw error;
   }
 
   unsubscribers.push(onValue(ref(db, "rooms/" + code), snapshot => {
     if (!snapshot.exists()) {
       teardownRoom({ removeMember: false });
+      switchView("discover");
       showToast("This room no longer exists.");
       return;
     }
@@ -848,15 +873,11 @@ async function enterRoom(code) {
 
   unsubscribers.push(onChildAdded(ref(db, `rooms/${code}/chat`), snapshot => {
     const message = snapshot.val();
-
-    if (message) {
-      addMessage(message.name || "Guest", message.text || "");
-    }
+    if (message) addMessage(message.name || "Guest", message.text || "");
   }));
 
   unsubscribers.push(onChildAdded(ref(db, `rooms/${code}/reactions`), snapshot => {
     const reaction = snapshot.val();
-
     if (reaction) {
       $("reactionFeed").textContent =
         `${reaction.name || "Someone"} ${reaction.emoji || "✨"}`;
@@ -875,11 +896,10 @@ async function enterRoom(code) {
     const revision = Number(state.revision || 0);
 
     if (!firstSnapshot && revision <= lastPlaybackRevision) return;
-
     lastPlaybackRevision = Math.max(lastPlaybackRevision, revision);
 
     if (state.updatedBy === me.uid && !firstSnapshot) {
-      $("nowTitle").textContent = state.title || "No video selected";
+      $("nowTitle").textContent = state.title || "YouTube video";
       return;
     }
 
@@ -923,12 +943,13 @@ $("leaveBtn").onclick = async () => {
 };
 
 function getSyncLabel() {
-  if (!currentRoom) return "NOT SYNCED";
-  if (!playerReady || !player || !window.YT || !YT.PlayerState) return "PLAYER LOADING";
+  if (!currentRoom) return "NOT IN ROOM";
+  if (!playerReady || !player || !window.YT || !YT.PlayerState) {
+    return "PLAYER LOADING";
+  }
 
   try {
     const state = player.getPlayerState();
-
     if (state === YT.PlayerState.PLAYING) return "PLAYING";
     if (state === YT.PlayerState.PAUSED) return "PAUSED";
     if (currentVideoId) return "VIDEO READY";
@@ -941,23 +962,26 @@ function getSyncLabel() {
 
 function refreshRoomBar() {
   const inRoom = !!currentRoom;
-
   $("roomCode").textContent = currentRoom || "NO ROOM";
   $("roomRole").textContent = !inRoom
     ? "PRIVATE SESSION"
     : isHost ? "● YOU ARE HOST" : "● GUEST SESSION";
 
   const count = Object.keys(members).length;
-
   $("memberCount").textContent = inRoom
     ? `${count} participant${count === 1 ? "" : "s"}`
     : "Not in a room";
 
-  $("playerCol").classList.toggle("hidden", !inRoom);
-  $("noRoomCard").classList.toggle("hidden", inRoom);
   $("leaveBtn").classList.toggle("hidden", !inRoom);
   $("chatStatus").textContent = inRoom ? "LIVE · ROOM" : "NOT IN ROOM";
   $("syncStatus").textContent = getSyncLabel();
+
+  $("discoverTitle").textContent = inRoom ? "Your room is ready." : "Nothing playing yet.";
+  $("discoverDescription").textContent = inRoom
+    ? `You're in room ${currentRoom}. Open the watch room to watch together.`
+    : "Create a room or join one with a code. Your shared player appears inside the watch room.";
+
+  $("openRoomBtn").classList.toggle("hidden", !inRoom);
 }
 
 $("copyBtn").onclick = async () => {
@@ -976,7 +1000,6 @@ $("chatForm").onsubmit = async event => {
 
   const text = $("chatInput").value.trim();
   if (!text) return;
-
   if (!currentRoom) return showToast("Join a room before chatting.");
 
   $("chatInput").value = "";
@@ -1069,6 +1092,10 @@ function getYouTubeVideoId(value) {
 }
 
 function ensurePlayer() {
+  if (!currentRoom) {
+    return Promise.reject(new Error("Join a room before opening the player."));
+  }
+
   if (playerPromise) return playerPromise;
 
   const generation = ++playerGeneration;
@@ -1076,7 +1103,7 @@ function ensurePlayer() {
   playerPromise = (async () => {
     await loadYouTubeAPI();
 
-    if (generation !== playerGeneration) {
+    if (generation !== playerGeneration || !currentRoom) {
       throw new Error("Player initialization was cancelled.");
     }
 
@@ -1148,10 +1175,7 @@ function ensurePlayer() {
             } else if (event.data === YT.PlayerState.CUED) {
               $("syncStatus").textContent = "VIDEO READY";
 
-              if (
-                pendingPlayback &&
-                pendingPlayback.videoId === currentVideoId
-              ) {
+              if (pendingPlayback && pendingPlayback.videoId === currentVideoId) {
                 const state = pendingPlayback;
                 pendingPlayback = null;
                 applyRemotePlayback(state);
@@ -1198,6 +1222,7 @@ function destroyPlayer() {
   pendingPlayback = null;
   currentVideoId = null;
   applyingRemote = false;
+  resetPlaybackObserver();
 
   const mount = document.createElement("div");
   mount.id = "youtubePlayer";
@@ -1227,6 +1252,8 @@ async function writePlayback(state) {
 }
 
 async function loadSharedVideo(videoId) {
+  if (!currentRoom) throw new Error("Join a room before loading a video.");
+
   await ensurePlayer();
 
   if (!player || !playerReady) {
@@ -1240,11 +1267,7 @@ async function loadSharedVideo(videoId) {
   $("syncStatus").textContent = "SYNCING";
 
   setApplyingRemote(1800);
-
-  player.cueVideoById({
-    videoId,
-    startSeconds: 0
-  });
+  player.cueVideoById({ videoId, startSeconds: 0 });
 }
 
 async function applyRemotePlayback(state) {
@@ -1254,8 +1277,16 @@ async function applyRemotePlayback(state) {
     return;
   }
 
+  if (!currentRoom) return;
+
   if (!player || !playerReady) {
     pendingPlayback = state;
+
+    ensurePlayer().catch(error => {
+      console.error("Could not initialize player:", error);
+      showToast(error.message);
+    });
+
     $("syncStatus").textContent = "PLAYER LOADING";
     return;
   }
@@ -1263,7 +1294,6 @@ async function applyRemotePlayback(state) {
   if (state.videoId !== currentVideoId) {
     currentVideoId = state.videoId;
     pendingPlayback = state;
-
     setApplyingRemote(5000);
 
     try {
@@ -1289,10 +1319,7 @@ async function applyRemotePlayback(state) {
     const currentTime = player.getCurrentTime();
     const playerState = player.getPlayerState();
 
-    if (
-      Number.isFinite(currentTime) &&
-      Math.abs(currentTime - targetTime) > 0.75
-    ) {
+    if (Number.isFinite(currentTime) && Math.abs(currentTime - targetTime) > 0.75) {
       player.seekTo(targetTime, true);
     }
 
@@ -1353,19 +1380,11 @@ $("loadYoutube").onclick = async () => {
 
 function publishPlayback(paused) {
   if (
-    !currentRoom ||
-    !me ||
-    applyingRemote ||
-    !player ||
-    !playerReady ||
-    !currentVideoId
-  ) {
-    return;
-  }
+    !currentRoom || !me || applyingRemote ||
+    !player || !playerReady || !currentVideoId
+  ) return;
 
   const now = Date.now();
-
-  // Avoid flooding the database when the player emits repeated state changes.
   if (now - lastLocalPublishAt < 500) return;
   lastLocalPublishAt = now;
 
@@ -1373,12 +1392,7 @@ function publishPlayback(paused) {
     const title = player.getVideoData()?.title || "YouTube video";
     const time = player.getCurrentTime() || 0;
 
-    writePlayback({
-      videoId: currentVideoId,
-      title,
-      time,
-      paused
-    }).catch(error => {
+    writePlayback({ videoId: currentVideoId, title, time, paused }).catch(error => {
       $("syncStatus").textContent = "SYNC ERROR";
       console.warn("Playback sync failed:", error);
     });
@@ -1388,13 +1402,7 @@ function publishPlayback(paused) {
 }
 
 function monitorLocalSeek() {
-  if (
-    !currentRoom ||
-    !player ||
-    !playerReady ||
-    !currentVideoId ||
-    !window.YT
-  ) {
+  if (!currentRoom || !player || !playerReady || !currentVideoId || !window.YT) {
     resetPlaybackObserver();
     return;
   }
@@ -1422,11 +1430,9 @@ function monitorLocalSeek() {
       !applyingRemote
     ) {
       const elapsed = (now - lastObservedAt) / 1000;
-
-      const expectedTime =
-        state === YT.PlayerState.PLAYING
-          ? lastObservedTime + elapsed
-          : lastObservedTime;
+      const expectedTime = state === YT.PlayerState.PLAYING
+        ? lastObservedTime + elapsed
+        : lastObservedTime;
 
       if (Math.abs(time - expectedTime) > 1.0) {
         publishPlayback(state === YT.PlayerState.PAUSED);
@@ -1446,16 +1452,9 @@ setInterval(monitorLocalSeek, 250);
 
 setInterval(() => {
   if (
-    !currentRoom ||
-    !isHost ||
-    !player ||
-    !playerReady ||
-    !currentVideoId ||
-    applyingRemote ||
-    !window.YT
-  ) {
-    return;
-  }
+    !currentRoom || !isHost || !player || !playerReady ||
+    !currentVideoId || applyingRemote || !window.YT
+  ) return;
 
   try {
     if (player.getPlayerState() === YT.PlayerState.PLAYING) {
@@ -1541,6 +1540,11 @@ function renderRoom() {
 function renderPlaylist() {
   $("playlist").replaceChildren();
 
+  if (!currentRoom) {
+    $("playlist").textContent = "Join a room to view its shared playlist.";
+    return;
+  }
+
   if (!playlist.length) {
     $("playlist").textContent = "Nothing queued yet. Load a YouTube video to add it here.";
     return;
@@ -1570,7 +1574,7 @@ function renderPlaylist() {
           title: "YouTube video"
         });
 
-        switchView("discover");
+        switchView("room");
       } catch (error) {
         showToast("Could not select video: " + error.message);
       }
@@ -1604,7 +1608,6 @@ $("transferHost").onclick = async () => {
   if (!isHost) return showToast("Only the host can transfer host.");
 
   const nextMember = Object.entries(members).find(([uid]) => uid !== me.uid);
-
   if (!nextMember) return showToast("Wait for another person to join first.");
 
   try {
@@ -1628,7 +1631,7 @@ window.addEventListener("beforeunload", () => {
 onAuthStateChanged(auth, user => {
   if (user) {
     me = user;
-    setConnection("Firebase connected. Create a room or join with a code.", true);
+    setConnection("Connected to server. Create a room or join with a code.", true);
     console.log("AFTERHOURS Firebase connected.");
   }
 });
@@ -1642,6 +1645,7 @@ signInAnonymously(auth).catch(error => {
   );
 });
 
+resetChat();
 refreshRoomBar();
 renderRoom();
 renderPlaylist();
