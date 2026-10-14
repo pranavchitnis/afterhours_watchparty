@@ -1,0 +1,1219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AFTERHOURS // Watch Together</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #090b10;
+  --panel: #11151d;
+  --line: #28313c;
+  --text: #edf4f4;
+  --muted: #8b98a5;
+  --cyan: #86ffe0;
+  --pink: #ff6da8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Space Grotesk", sans-serif;
+}
+
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+button {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--text);
+}
+
+button:hover { border-color: var(--cyan); }
+button:disabled { opacity: .5; cursor: wait; }
+
+input {
+  width: 100%;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #080a0e;
+  color: var(--text);
+}
+
+button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.primary {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #06100e;
+  font-weight: 700;
+}
+
+.active { border-color: var(--cyan); color: var(--cyan); }
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px 5%;
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.logo span { color: var(--cyan); }
+
+.logo small {
+  display: block;
+  font: 9px "DM Mono", monospace;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+
+nav, .actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 2px;
+}
+
+main {
+  max-width: 1400px;
+  margin: auto;
+  padding: 35px 5% 60px;
+}
+
+h1 {
+  font-size: clamp(36px, 6vw, 66px);
+  line-height: 1;
+  letter-spacing: -3px;
+  margin: 15px 0;
+}
+
+h2 { letter-spacing: -1px; }
+p { color: var(--muted); line-height: 1.6; }
+
+.notice {
+  border: 1px solid var(--line);
+  padding: 12px 15px;
+  border-radius: 6px;
+  color: var(--muted);
+  font: 11px "DM Mono", monospace;
+  margin-bottom: 22px;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.hero p { max-width: 470px; }
+
+.roombar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.roomcode {
+  color: var(--cyan);
+  font: 20px "DM Mono", monospace;
+  letter-spacing: 3px;
+  margin-top: 6px;
+}
+
+.muted { color: var(--muted); font-size: 12px; }
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 18px;
+}
+
+.player, .panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.youtube-input {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+}
+
+.youtube-input input { flex: 1; }
+
+.youtube-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+
+.youtube-player iframe,
+.youtube-player > div {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.player-info {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.chat-head {
+  padding: 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.messages {
+  flex: 1;
+  min-height: 250px;
+  max-height: 370px;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.message {
+  margin-bottom: 15px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.message strong {
+  color: var(--cyan);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.chat-form {
+  display: flex;
+  gap: 6px;
+  padding: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.section { margin-top: 38px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.search { max-width: 270px; }
+
+.panel { padding: 18px; margin-top: 18px; }
+
+.member {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.pollrow, .playlist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.pollrow button { flex: 1; text-align: left; }
+.vote-count { color: var(--cyan); font: 10px "DM Mono", monospace; }
+.hidden { display: none !important; }
+
+.modal-back {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background: #000c;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.modal {
+  width: min(420px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 25px;
+}
+
+.modal input { margin: 7px 0; }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.modal-actions button { flex: 1; }
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cyan);
+  color: #06100e;
+  border-radius: 6px;
+  padding: 12px 18px;
+  z-index: 10;
+  font-size: 12px;
+  max-width: 90%;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 22px 5%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--muted);
+  font: 10px "DM Mono", monospace;
+}
+
+@media(max-width:900px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+@media(max-width:500px) {
+  header, main { padding-left: 4%; padding-right: 4%; }
+  nav { width: 100%; }
+  .youtube-input { flex-wrap: wrap; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">
+    AFTER<span>HOURS</span>
+    <small>THE INTERNET'S LIVING ROOM</small>
+  </div>
+
+  <nav>
+    <button class="navbtn active" data-view="discover">Discover</button>
+    <button class="navbtn" data-view="room">Watch room</button>
+    <button class="navbtn" data-view="playlist">Playlist</button>
+  </nav>
+
+  <span id="status" class="eyebrow">CONNECTING...</span>
+</header>
+
+<main>
+  <div id="connection" class="notice">Connecting to Firebase...</div>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">001 / WATCH TOGETHER</div>
+      <h1>Same screen.<br>Same moment.</h1>
+      <p>Find something worth watching. Invite your people. Make a night of it.</p>
+    </div>
+    <div class="actions">
+      <button class="primary" id="createBtn">+ Create a room</button>
+      <button id="joinBtn">Join with code ↗</button>
+    </div>
+  </section>
+
+  <div class="roombar">
+    <div>
+      <div class="muted">CURRENT ROOM</div>
+      <div id="roomCode" class="roomcode">NO ROOM</div>
+    </div>
+    <div>
+      <div id="roomRole" class="eyebrow">PRIVATE SESSION</div>
+      <div id="memberCount" class="muted">Not in a room</div>
+    </div>
+    <button id="copyBtn">Copy invite code ↗</button>
+  </div>
+
+  <section id="discoverView">
+    <div class="layout">
+      <div>
+        <div class="player">
+          <div class="youtube-input">
+            <input id="youtubeUrl" type="url" placeholder="Paste a YouTube link...">
+            <button id="loadYoutube" class="primary" type="button">Load Video</button>
+          </div>
+
+          <div class="youtube-player">
+            <div id="youtubePlayer"></div>
+          </div>
+
+          <div class="player-info">
+            <div>
+              <div class="eyebrow">NOW PLAYING</div>
+              <strong id="nowTitle">No video selected</strong>
+            </div>
+            <span id="syncStatus" class="muted">NOT SYNCED</span>
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top:12px">
+          <button data-emoji="😂">😂</button>
+          <button data-emoji="🔥">🔥</button>
+          <button data-emoji="😭">😭</button>
+          <button data-emoji="👀">👀</button>
+          <button data-emoji="❤️">❤️</button>
+          <span id="reactionFeed" class="muted"></span>
+        </div>
+      </div>
+
+      <aside class="panel chat">
+        <div class="chat-head">
+          <strong>Room chat</strong>
+          <span id="chatStatus" class="muted">NOT IN ROOM</span>
+        </div>
+        <div id="messages" class="messages">
+          <div class="message">
+            <strong>AFTERHOURS BOT</strong>
+            Create or join a room to chat with friends.
+          </div>
+        </div>
+        <form id="chatForm" class="chat-form">
+          <input id="chatInput" maxlength="240" placeholder="Say something..." required>
+          <button class="primary">Send</button>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <section id="roomView" class="hidden">
+    <div class="eyebrow">002 / THE HANGOUT</div>
+    <h2>Your room, your rules.</h2>
+    <p id="roomDescription">Create or join a room to begin.</p>
+
+    <div class="panel">
+      <div class="eyebrow">PEOPLE HERE</div>
+      <div id="members">No participants</div>
+      <div class="actions" style="margin-top:18px">
+        <button id="transferHost">Transfer host</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="eyebrow">GROUP POLL</div>
+      <h2>What are we watching?</h2>
+      <p>Vote for a video in the shared playlist.</p>
+      <div id="pollOptions"></div>
+    </div>
+  </section>
+
+  <section id="playlistView" class="hidden">
+    <div class="eyebrow">003 / QUEUED FOR LATER</div>
+    <h2>The shared playlist</h2>
+    <p>Load a YouTube video to add it to your room's lineup.</p>
+    <div class="panel" id="playlist"></div>
+  </section>
+</main>
+
+<footer>
+  <span>AFTERHOURS © 2026</span>
+  <span>BUILT DIFFERENT. WATCH TOGETHER.</span>
+</footer>
+
+<div id="modalBack" class="modal-back hidden">
+  <div class="modal">
+    <div class="eyebrow">AFTERHOURS / ROOM ACCESS</div>
+    <h2 id="modalTitle">Create your room</h2>
+    <p id="modalDescription">Pick a name to get started.</p>
+    <input id="nameInput" maxlength="24" placeholder="Your name" value="You">
+    <input id="codeInput" class="hidden" maxlength="6" placeholder="Six-character room code">
+    <div class="modal-actions">
+      <button id="cancelBtn">Cancel</button>
+      <button class="primary" id="confirmBtn">Let's go ↗</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+  getDatabase, ref, set, get, update, push, remove,
+  onValue, onChildAdded, onDisconnect, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+import {
+  getAuth, signInAnonymously, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+/* Existing Firebase project configuration */
+const firebaseConfig = {
+  apiKey: "AIzaSyCtBHlwu_oB2Em5eXF233ia85r0eNhOfF8",
+  authDomain: "afterhours-watchparty.firebaseapp.com",
+  databaseURL: "https://afterhours-watchparty-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "afterhours-watchparty",
+  appId: "1:384444323094:web:0ddd28ac89453cdd112c37"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+const $ = id => document.getElementById(id);
+
+let me = null;
+let currentRoom = null;
+let userName = "You";
+let isHost = false;
+let members = {};
+let playlist = [];
+let votes = {};
+let myVotes = new Set();
+let modalMode = "create";
+let unsubscribers = [];
+let player = null;
+let playerReady = false;
+let currentVideoId = null;
+let applyingRemote = false;
+let toastTimer;
+let lastSentTime = 0;
+let lastPlayerState = -1;
+let apiPromise = null;
+
+function showToast(message) {
+  $("toast").textContent = message;
+  $("toast").classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.add("hidden"), 3000);
+}
+
+function setConnection(message, good = false) {
+  $("connection").textContent = message;
+  $("status").textContent = good ? "● FIREBASE ONLINE" : "● CHECK CONNECTION";
+  $("status").style.color = good ? "var(--cyan)" : "var(--pink)";
+}
+
+function roomPath(path = "") {
+  if (!currentRoom) throw new Error("You are not in a room.");
+  return ref(db, `rooms/${currentRoom}${path ? "/" + path : ""}`);
+}
+
+function listenCleanup() {
+  unsubscribers.forEach(fn => {
+    try { fn(); } catch (error) { console.warn(error); }
+  });
+  unsubscribers = [];
+}
+
+function switchView(view) {
+  ["discover", "room", "playlist"].forEach(name => {
+    $(name + "View").classList.toggle("hidden", name !== view);
+  });
+
+  document.querySelectorAll(".navbtn").forEach(button => {
+    button.classList.toggle("active", button.dataset.view === view);
+  });
+
+  if (view === "room") renderRoom();
+  if (view === "playlist") renderPlaylist();
+}
+
+document.querySelectorAll(".navbtn").forEach(button => {
+  button.addEventListener("click", () => switchView(button.dataset.view));
+});
+
+function openModal(mode) {
+  if (!me) {
+    showToast("Firebase is still connecting. Try again in a moment.");
+    return;
+  }
+
+  modalMode = mode;
+  $("modalTitle").textContent = mode === "create" ? "Create your room" : "Join a room";
+  $("modalDescription").textContent = mode === "create"
+    ? "Choose your name and generate an invite code."
+    : "Enter the six-character code from your host.";
+
+  $("codeInput").classList.toggle("hidden", mode !== "join");
+  $("modalBack").classList.remove("hidden");
+}
+
+$("createBtn").onclick = () => openModal("create");
+$("joinBtn").onclick = () => openModal("join");
+$("cancelBtn").onclick = () => $("modalBack").classList.add("hidden");
+
+function generateCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  return Array.from({ length: 6 }, () =>
+    chars[Math.floor(Math.random() * chars.length)]
+  ).join("");
+}
+
+async function createRoom() {
+  let code = "";
+
+  for (let i = 0; i < 8; i++) {
+    const candidate = generateCode();
+    const existing = await get(ref(db, "rooms/" + candidate));
+
+    if (!existing.exists()) {
+      code = candidate;
+      break;
+    }
+  }
+
+  if (!code) throw new Error("Could not generate a room code. Try again.");
+
+  await set(ref(db, "rooms/" + code), {
+    hostUid: me.uid,
+    hostName: userName,
+    createdAt: serverTimestamp(),
+    members: {},
+    playlist: [],
+    votes: {},
+    chat: {},
+    reactions: {},
+    playback: {
+      videoId: "",
+      time: 0,
+      paused: true,
+      title: "No video selected",
+      updatedBy: me.uid,
+      updatedAt: serverTimestamp()
+    }
+  });
+
+  await enterRoom(code);
+  showToast("Room created! Code: " + code);
+}
+
+async function joinRoom() {
+  const code = $("codeInput").value.trim().toUpperCase();
+
+  if (!/^[A-Z0-9]{6}$/.test(code)) {
+    throw new Error("Enter a valid six-character room code.");
+  }
+
+  const snapshot = await get(ref(db, "rooms/" + code));
+
+  if (!snapshot.exists()) {
+    throw new Error("Room not found. Check the invite code.");
+  }
+
+  await enterRoom(code);
+  showToast("Joined room " + code);
+}
+
+async function enterRoom(code) {
+  listenCleanup();
+  currentRoom = code;
+  myVotes = new Set();
+
+  const memberRef = ref(db, `rooms/${code}/members/${me.uid}`);
+
+  await set(memberRef, {
+    name: userName,
+    joinedAt: serverTimestamp()
+  });
+
+  onDisconnect(memberRef).remove();
+
+  unsubscribers.push(onValue(ref(db, "rooms/" + code), snapshot => {
+    if (!snapshot.exists()) {
+      currentRoom = null;
+      listenCleanup();
+      refreshRoomBar();
+      showToast("This room no longer exists.");
+      return;
+    }
+
+    const data = snapshot.val() || {};
+
+    isHost = data.hostUid === me.uid;
+    members = data.members || {};
+    playlist = Array.isArray(data.playlist) ? data.playlist : [];
+    votes = data.votes || {};
+
+    refreshRoomBar();
+    renderRoom();
+    renderPlaylist();
+  }, error => {
+    console.error("Room listener failed:", error);
+    showToast("Room update failed: " + error.message);
+  }));
+
+  $("messages").replaceChildren();
+  addMessage("AFTERHOURS BOT", "Connected to room " + code + ".");
+
+  unsubscribers.push(onChildAdded(ref(db, `rooms/${code}/chat`), snapshot => {
+    const message = snapshot.val();
+    if (message) addMessage(message.name || "Guest", message.text || "");
+  }));
+
+  unsubscribers.push(onChildAdded(ref(db, `rooms/${code}/reactions`), snapshot => {
+    const reaction = snapshot.val();
+    if (reaction) {
+      $("reactionFeed").textContent =
+        `${reaction.name || "Someone"} ${reaction.emoji || "✨"}`;
+    }
+  }));
+
+  unsubscribers.push(onValue(ref(db, `rooms/${code}/playback`), snapshot => {
+    const state = snapshot.val();
+    if (!state) return;
+
+    if (state.updatedBy === me.uid) {
+      $("nowTitle").textContent = state.title || "No video selected";
+      return;
+    }
+
+    applyRemotePlayback(state);
+  }));
+
+  switchView("room");
+  refreshRoomBar();
+}
+
+$("confirmBtn").onclick = async () => {
+  if (!me) return showToast("Still connecting to Firebase.");
+
+  userName = $("nameInput").value.trim().slice(0, 24) || "Guest";
+  $("confirmBtn").disabled = true;
+
+  try {
+    if (modalMode === "create") {
+      await createRoom();
+    } else {
+      await joinRoom();
+    }
+
+    $("modalBack").classList.add("hidden");
+  } catch (error) {
+    console.error("Room operation failed:", error);
+    showToast("Could not access room: " + (error.message || error.code));
+  } finally {
+    $("confirmBtn").disabled = false;
+  }
+};
+
+function refreshRoomBar() {
+  $("roomCode").textContent = currentRoom || "NO ROOM";
+
+  $("roomRole").textContent = !currentRoom
+    ? "PRIVATE SESSION"
+    : isHost ? "● YOU ARE HOST" : "● GUEST SESSION";
+
+  const count = Object.keys(members).length;
+
+  $("memberCount").textContent = currentRoom
+    ? `${count} participant${count === 1 ? "" : "s"}`
+    : "Not in a room";
+
+  $("chatStatus").textContent = currentRoom ? "LIVE · ROOM" : "NOT IN ROOM";
+  $("syncStatus").textContent = currentRoom ? "WAITING FOR VIDEO" : "NOT SYNCED";
+}
+
+$("copyBtn").onclick = async () => {
+  if (!currentRoom) return showToast("Create or join a room first.");
+
+  try {
+    await navigator.clipboard.writeText(currentRoom);
+    showToast("Invite code copied: " + currentRoom);
+  } catch {
+    showToast("Your invite code is " + currentRoom);
+  }
+};
+
+function addMessage(name, text) {
+  const message = document.createElement("div");
+  message.className = "message";
+
+  const author = document.createElement("strong");
+  author.textContent = name;
+
+  const content = document.createElement("div");
+  content.textContent = text;
+
+  message.append(author, content);
+  $("messages").appendChild(message);
+  $("messages").scrollTop = $("messages").scrollHeight;
+}
+
+$("chatForm").onsubmit = async event => {
+  event.preventDefault();
+
+  const text = $("chatInput").value.trim();
+  if (!text) return;
+
+  if (!currentRoom) return showToast("Join a room before chatting.");
+
+  $("chatInput").value = "";
+
+  try {
+    await push(roomPath("chat"), {
+      uid: me.uid,
+      name: userName,
+      text: text.slice(0, 240),
+      createdAt: serverTimestamp()
+    });
+  } catch (error) {
+    showToast("Message failed: " + error.message);
+  }
+};
+
+document.querySelectorAll("[data-emoji]").forEach(button => {
+  button.onclick = async () => {
+    if (!currentRoom) return showToast("Join a room to react.");
+
+    try {
+      await push(roomPath("reactions"), {
+        uid: me.uid,
+        name: userName,
+        emoji: button.dataset.emoji,
+        createdAt: serverTimestamp()
+      });
+    } catch (error) {
+      showToast("Reaction failed: " + error.message);
+    }
+  };
+});
+
+/* YouTube API: loaded once, with the callback registered before loading. */
+function loadYouTubeAPI() {
+  if (apiPromise) return apiPromise;
+
+  apiPromise = new Promise((resolve, reject) => {
+    window.onYouTubeIframeAPIReady = resolve;
+
+    const script = document.createElement("script");
+    script.src = "https://www.youtube.com/iframe_api";
+    script.onerror = () => reject(new Error("Could not load the YouTube player API."));
+    document.head.appendChild(script);
+  });
+
+  return apiPromise;
+}
+
+function getYouTubeVideoId(value) {
+  try {
+    const url = new URL(value);
+    let id = "";
+
+    if (url.hostname === "youtu.be") {
+      id = url.pathname.slice(1);
+    } else if ([
+      "youtube.com", "www.youtube.com",
+      "m.youtube.com", "music.youtube.com"
+    ].includes(url.hostname)) {
+      if (url.pathname === "/watch") {
+        id = url.searchParams.get("v") || "";
+      } else if (
+        url.pathname.startsWith("/embed/") ||
+        url.pathname.startsWith("/shorts/")
+      ) {
+        id = url.pathname.split("/")[2] || "";
+      }
+    }
+
+    return /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+async function initialisePlayer() {
+  try {
+    await loadYouTubeAPI();
+
+    player = new YT.Player("youtubePlayer", {
+      width: "100%",
+      height: "100%",
+      playerVars: {
+        playsinline: 1,
+        controls: 1,
+        rel: 0
+      },
+      events: {
+        onReady: () => {
+          playerReady = true;
+          $("syncStatus").textContent = currentRoom ? "READY TO SYNC" : "NOT SYNCED";
+        },
+
+        onStateChange: event => {
+          if (!playerReady || applyingRemote || !currentRoom || !currentVideoId) return;
+
+          if (event.data === YT.PlayerState.PLAYING) {
+            publishPlayback(false);
+            $("nowTitle").textContent = player.getVideoData().title || "YouTube video";
+          } else if (event.data === YT.PlayerState.PAUSED) {
+            publishPlayback(true);
+          } else if (event.data === YT.PlayerState.ENDED) {
+            publishPlayback(true);
+          }
+        },
+
+        onError: event => {
+          console.warn("YouTube player error:", event.data);
+          showToast("This video may not allow embedded playback.");
+        }
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    showToast(error.message);
+  }
+}
+
+async function writePlayback(state) {
+  if (!currentRoom || !me) return;
+
+  await update(roomPath("playback"), {
+    ...state,
+    updatedBy: me.uid,
+    updatedAt: serverTimestamp()
+  });
+}
+
+async function loadSharedVideo(id) {
+  if (!playerReady) throw new Error("YouTube player is still loading. Try again shortly.");
+
+  currentVideoId = id;
+  $("nowTitle").textContent = "Loading video...";
+  $("syncStatus").textContent = "SYNCING";
+
+  applyingRemote = true;
+  player.cueVideoById(id);
+
+  setTimeout(() => {
+    applyingRemote = false;
+    if (playerReady) {
+      const title = player.getVideoData().title || "YouTube video";
+      $("nowTitle").textContent = title;
+    }
+  }, 700);
+}
+
+async function applyRemotePlayback(state) {
+  if (!state.videoId) {
+    $("nowTitle").textContent = "No video selected";
+    $("syncStatus").textContent = "WAITING FOR VIDEO";
+    return;
+  }
+
+  if (!playerReady) {
+    $("syncStatus").textContent = "PLAYER LOADING";
+    return;
+  }
+
+  applyingRemote = true;
+
+  try {
+    if (state.videoId !== currentVideoId) {
+      currentVideoId = state.videoId;
+      player.cueVideoById(state.videoId, state.time || 0);
+    } else {
+      const currentTime = player.getCurrentTime();
+
+      if (Number.isFinite(state.time) &&
+          Math.abs(currentTime - state.time) > 3) {
+        player.seekTo(state.time, true);
+      }
+    }
+
+    if (state.paused) {
+      player.pauseVideo();
+    } else {
+      player.playVideo();
+    }
+
+    $("nowTitle").textContent =
+      state.title || player.getVideoData().title || "YouTube video";
+    $("syncStatus").textContent = "SYNCED";
+  } catch (error) {
+    console.warn("Could not apply remote playback:", error);
+  }
+
+  setTimeout(() => { applyingRemote = false; }, 900);
+}
+
+$("loadYoutube").onclick = async () => {
+  const videoId = getYouTubeVideoId($("youtubeUrl").value.trim());
+
+  if (!videoId) return showToast("Paste a valid YouTube video link.");
+  if (!currentRoom) return showToast("Create or join a room before loading a video.");
+
+  try {
+    await loadSharedVideo(videoId);
+
+    const title = player.getVideoData()?.title || "YouTube video";
+
+    await writePlayback({
+      videoId,
+      title,
+      time: 0,
+      paused: true
+    });
+
+    if (!playlist.includes(videoId)) {
+      await set(roomPath("playlist"), [...playlist, videoId]);
+    }
+
+    $("nowTitle").textContent = title;
+    $("syncStatus").textContent = "VIDEO SHARED";
+    showToast("Video shared with the room.");
+  } catch (error) {
+    console.error("Video sharing failed:", error);
+    showToast("Could not share video: " + error.message);
+  }
+};
+
+function publishPlayback(paused) {
+  if (!currentRoom || !me || applyingRemote || !playerReady || !currentVideoId) return;
+
+  const now = Date.now();
+
+  if (now - lastSentTime < 500) return;
+  lastSentTime = now;
+
+  writePlayback({
+    videoId: currentVideoId,
+    title: player.getVideoData().title || "YouTube video",
+    time: player.getCurrentTime() || 0,
+    paused
+  }).catch(error => console.warn("Playback sync failed:", error));
+}
+
+/* Host publishes the current playback position periodically. */
+setInterval(() => {
+  if (!currentRoom || !isHost || !playerReady || !currentVideoId || applyingRemote) return;
+
+  const state = player.getPlayerState();
+
+  if (state === YT.PlayerState.PLAYING) {
+    publishPlayback(false);
+  }
+}, 2500);
+
+function safeKey(value) {
+  return value.replace(/[.#$/\[\]]/g, "_");
+}
+
+async function castVote(videoId) {
+  if (!currentRoom) return showToast("Join a room before voting.");
+  if (myVotes.has(videoId)) return showToast("You've already voted for this video.");
+
+  try {
+    await set(roomPath(`votes/${safeKey(videoId)}/${me.uid}`), {
+      name: userName,
+      videoId,
+      createdAt: serverTimestamp()
+    });
+
+    myVotes.add(videoId);
+    showToast("Vote recorded.");
+  } catch (error) {
+    showToast("Vote failed: " + error.message);
+  }
+}
+
+function renderRoom() {
+  $("roomDescription").textContent = currentRoom
+    ? `Room code: ${currentRoom}. Share it with friends so they can join.`
+    : "Create or join a room to begin.";
+
+  $("members").replaceChildren();
+
+  const people = Object.entries(members);
+
+  if (!people.length) $("members").textContent = "No participants";
+
+  people.forEach(([uid, person]) => {
+    const row = document.createElement("div");
+    row.className = "member";
+    row.textContent = (person.name || "Guest")
+      + (uid === me?.uid ? " · You" : "")
+      + (uid === Object.keys(members).find(key => key === uid && isHost) && isHost
+        ? " · Host" : "");
+
+    $("members").appendChild(row);
+  });
+
+  $("pollOptions").replaceChildren();
+
+  if (!playlist.length) {
+    $("pollOptions").textContent = "Load a YouTube video to start the poll.";
+    return;
+  }
+
+  playlist.forEach(videoId => {
+    const row = document.createElement("div");
+    row.className = "pollrow";
+
+    const button = document.createElement("button");
+    button.textContent = videoId;
+    button.onclick = () => castVote(videoId);
+
+    const count = document.createElement("span");
+    count.className = "vote-count";
+    count.textContent =
+      Object.keys((votes || {})[safeKey(videoId)] || {}).length + " VOTES";
+
+    row.append(button, count);
+    $("pollOptions").appendChild(row);
+  });
+}
+
+function renderPlaylist() {
+  $("playlist").replaceChildren();
+
+  if (!playlist.length) {
+    $("playlist").textContent = "Nothing queued yet. Load a YouTube video to add it here.";
+    return;
+  }
+
+  playlist.forEach((videoId, index) => {
+    const row = document.createElement("div");
+    row.className = "playlist-row";
+
+    const label = document.createElement("span");
+    label.textContent = `${String(index + 1).padStart(2, "0")} / ${videoId}`;
+
+    const select = document.createElement("button");
+    select.className = "primary";
+    select.textContent = "Select";
+
+    select.onclick = async () => {
+      if (!currentRoom) return showToast("Join a room first.");
+
+      try {
+        await loadSharedVideo(videoId);
+
+        await writePlayback({
+          videoId,
+          time: 0,
+          paused: true,
+          title: "YouTube video"
+        });
+
+        switchView("discover");
+      } catch (error) {
+        showToast("Could not select video: " + error.message);
+      }
+    };
+
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove";
+
+    removeButton.onclick = async () => {
+      try {
+        await set(roomPath("playlist"), playlist.filter(id => id !== videoId));
+        showToast("Removed from playlist.");
+      } catch (error) {
+        showToast("Could not remove video: " + error.message);
+      }
+    };
+
+    row.append(label, select, removeButton);
+    $("playlist").appendChild(row);
+  });
+}
+
+$("transferHost").onclick = async () => {
+  if (!currentRoom) return showToast("Join a room first.");
+  if (!isHost) return showToast("Only the host can transfer host.");
+
+  const next = Object.entries(members).find(([uid]) => uid !== me.uid);
+
+  if (!next) return showToast("Wait for another person to join first.");
+
+  try {
+    await update(roomPath(), {
+      hostUid: next[0],
+      hostName: next[1].name || "Guest"
+    });
+
+    showToast("Host transferred.");
+  } catch (error) {
+    showToast("Transfer failed: " + error.message);
+  }
+};
+
+window.addEventListener("beforeunload", () => {
+  if (currentRoom && me) {
+    remove(ref(db, `rooms/${currentRoom}/members/${me.uid}`));
+  }
+});
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    me = user;
+    setConnection("Firebase connected. Create a room or join with a code.", true);
+    console.log("AFTERHOURS Firebase connected.");
+  }
+});
+
+signInAnonymously(auth).catch(error => {
+  console.error("Firebase authentication failed:", error);
+  setConnection(
+    "Authentication failed: " + error.code +
+    ". Check that Anonymous sign-in is enabled in Firebase.",
+    false
+  );
+});
+
+initialisePlayer();
+renderRoom();
+renderPlaylist();
+</script>
+</body>
+</html>
