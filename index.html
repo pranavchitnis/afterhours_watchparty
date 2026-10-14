@@ -760,7 +760,15 @@ function refreshRoomBar() {
     : "Not in a room";
 
   $("chatStatus").textContent = currentRoom ? "LIVE · ROOM" : "NOT IN ROOM";
-  $("syncStatus").textContent = currentRoom ? "WAITING FOR VIDEO" : "NOT SYNCED";
+  $("syncStatus").textContent = !currentRoom
+  ? "NOT SYNCED"
+  : player && player.getPlayerState && player.getPlayerState() === YT.PlayerState.PLAYING
+    ? "PLAYING"
+    : player && player.getPlayerState && player.getPlayerState() === YT.PlayerState.PAUSED
+      ? "PAUSED"
+      : player && player.getVideoData && player.getVideoData()?.title
+        ? "VIDEO READY"
+        : "WAITING FOR VIDEO";
 }
 
 $("copyBtn").onclick = async () => {
