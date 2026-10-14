@@ -897,18 +897,35 @@ async function initialisePlayer() {
           $("syncStatus").textContent = currentRoom ? "READY TO SYNC" : "NOT SYNCED";
         },
 
-        onStateChange: event => {
-          if (!playerReady || applyingRemote || !currentRoom || !currentVideoId) return;
+       onStateChange: event => {
+  if (!playerReady) return;
 
-          if (event.data === YT.PlayerState.PLAYING) {
-            publishPlayback(false);
-            $("nowTitle").textContent = player.getVideoData().title || "YouTube video";
-          } else if (event.data === YT.PlayerState.PAUSED) {
-            publishPlayback(true);
-          } else if (event.data === YT.PlayerState.ENDED) {
-            publishPlayback(true);
-          }
-        },
+  if (event.data === YT.PlayerState.PLAYING) {
+    $("syncStatus").textContent = "PLAYING";
+    $("nowTitle").textContent =
+      player.getVideoData()?.title || "YouTube video";
+
+    if (!applyingRemote && currentRoom && currentVideoId) {
+      publishPlayback(false);
+    }
+  } else if (event.data === YT.PlayerState.PAUSED) {
+    $("syncStatus").textContent = "PAUSED";
+
+    if (!applyingRemote && currentRoom && currentVideoId) {
+      publishPlayback(true);
+    }
+  } else if (event.data === YT.PlayerState.ENDED) {
+    $("syncStatus").textContent = "VIDEO ENDED";
+
+    if (!applyingRemote && currentRoom && currentVideoId) {
+      publishPlayback(true);
+    }
+  } else if (event.data === YT.PlayerState.BUFFERING) {
+    $("syncStatus").textContent = "BUFFERING";
+  } else if (event.data === YT.PlayerState.CUED) {
+    $("syncStatus").textContent = "VIDEO READY";
+  }
+},
 
         onError: event => {
           console.warn("YouTube player error:", event.data);
