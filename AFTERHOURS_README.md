@@ -38,7 +38,9 @@ For the best demonstration, open the live demo in two separate browser profiles 
 ## Project Files
 
 index.html --->  # Application interface, styling, and logic 
+
 firebase-database-rules.json --->  # Database access rules
+
 README.md --->  # Project overview and evaluation guide
 
 ## Evaluation Notes
